@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Trips{% endblock %}
+{% block body %}
+    <h1>Welcome!</h1>
+
+    <h2>Navigation</h2>
+    <ul>
+        <li><a href="/categories">Categories</a></li>
+        <li><a href="/items">Items</a></li>
+        <li><a href="/templates">Templates</a></li>
+        <li><a href="/about">About</a></li>
+    </ul>
+    
+    <h2>My Trips</h2>
+    <ul>
+    {% for trip in trips %}
+        <li><a href="/trips/{{trip.id}}">{{ trip.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+</html>
