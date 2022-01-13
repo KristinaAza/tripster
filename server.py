@@ -1,8 +1,14 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, request
 from model import connect_to_db
 import crud
 
 app = Flask(__name__)
+
+@app.route("/")
+def redirect_to_trips():
+
+    return redirect("/trips")
+
 
 @app.route("/trips")
 def render_trips():
@@ -27,6 +33,15 @@ def render_categories():
     categories = crud.get_all_categories(user_id=1)
 
     return render_template("categories.html", categories=categories)
+
+
+@app.route("/category", methods=['POST'])
+def add_category():
+
+    name = request.form.get("name")
+    crud.create_category(name, 1)
+
+    return redirect("/categories")
 
 
 @app.route("/items")
