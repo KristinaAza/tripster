@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Trips{% endblock %}
-{% block body %}    
+{% block body %}
+    <button id="add-trip">Add New Trip</button>    
+    
+    <div id="form"></div>
+    
     <h2>My Trips</h2>
     <ul>
     {% for trip in trips %}

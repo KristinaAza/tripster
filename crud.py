@@ -44,6 +44,12 @@ def get_all_trips(user_id):
     return trips
 
 
+def get_trip_by_id(id):
+
+    trip = Trip.query.get(id)
+    return trip
+
+
 # trip_items
 def create_trip_item(item_id, trip_id, quantity, checked):
 

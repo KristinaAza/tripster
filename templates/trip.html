@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Trip{% endblock %}
+{% block body %}    
+    <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
+    <ul>
+    {% for trip_item in trip_items %}
+        <li>{{ trip_item.item.name }} {{ trip_item.quantity }} {{ trip_item.checked }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+</html>

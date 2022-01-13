@@ -12,6 +12,15 @@ def render_trips():
     return render_template("trips.html", trips=trips)
 
 
+@app.route("/trips/<id>")
+def render_trip(id):
+
+    trip = crud.get_trip_by_id(id)
+    trip_items = crud.get_all_trip_items(id)
+
+    return render_template("trip.html", trip=trip, trip_items=trip_items)
+
+
 @app.route("/categories")
 def render_categories():
 
