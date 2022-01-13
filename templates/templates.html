@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Templates{% endblock %}
+{% block body %}    
+    <h2>My Templates</h2>
+    <ul>
+    {% for template in templates %}
+        <li><a href="/templates/{{template.id}}">{{ template.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+</html>
