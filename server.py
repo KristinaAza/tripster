@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, jsonify
 from model import connect_to_db
 import crud
 
@@ -36,12 +36,27 @@ def render_categories():
 
 
 @app.route("/category", methods=['POST'])
-def add_category():
+def add_category_with_rerender():
 
     name = request.form.get("name")
     crud.create_category(name, 1)
 
     return redirect("/categories")
+
+
+@app.route("/api/category", methods=['POST'])
+def add_category():
+
+    name = request.get_json().get("name")
+    category = crud.create_category(name, 1)
+
+    new_category = {
+        "name": category.name,
+        "id": category.id,
+    }
+
+    return jsonify({"categoryAdded": new_category})
+
 
 
 @app.route("/items")

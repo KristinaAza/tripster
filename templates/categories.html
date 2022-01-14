@@ -1,18 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-    <form method="POST" action="/category">
-        <label for="field-name">Name</label>
-        <input id="field-name" class="form-control" type="text" name="name">         
-        
-        <input type="submit" value="Add new category" class="btn btn-primary">
+    <button id="open-form">Add New Category</button>
+
+    <form id="add-category" style="visibility:hidden;" method="POST" action="/category">
+        <label for="name-field">Name</label>
+        <input id="name-field" class="form-control" type="text" name="name">
+        <input type="submit" value="Add" class="btn btn-primary">
     </form>
 
     <h2>My Categories</h2>
-    <ul>
+    <ul id="categories">
     {% for category in categories %}
         <li><a href="/categories/{{category.id}}">{{ category.name }}</a></li>
     {% endfor %}
     </ul>
+
+    <script src="static/js/categories.js"></script>
 {% endblock %}
 </html>
