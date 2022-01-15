@@ -14,7 +14,7 @@
     {% for category in categories %}
         <li>
             <a id="link-{{category.id}}" href="/categories/{{category.id}}">{{ category.name }}</a>
-            <input id="id-field-{{category.id}}" class="form-control" value="{{category.id}}" type="hidden" name="id">
+            <!-- <input id="id-field-{{category.id}}" class="form-control" value="{{category.id}}" type="hidden" name="id"> -->
 
             <button id="open-edit-form-{{category.id}}" class="edit-button">Edit</button>
 

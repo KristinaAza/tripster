@@ -79,6 +79,16 @@ def render_items():
 
     return render_template("items.html", categories=categories)
 
+@app.route("/item", methods=['POST'])
+def add_item_with_rerender():
+
+    category_id = request.form.get("category")
+    name = request.form.get("name")
+    crud.create_item(name, category_id, 1)
+
+    return redirect("/items")
+
+
 
 @app.route("/templates")
 def render_templates():

@@ -1,6 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Items{% endblock %}
-{% block body %}    
+{% block body %}
+    <button id="open-add-form">Add New Item</button>
+
+    <form id="add-item" style="visibility:hidden;" method="POST" action="/item">
+        <label>Category</label>
+        <select name="category">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}    
+        </select>
+
+        <label for="name-field">Name</label>
+        <input id="name-field" class="form-control" type="text" name="name">
+        <input type="submit" value="Add" class="btn btn-primary">
+    </form>  
+
     <h2>My Items</h2>
     <ul>
         {% for category in categories %}
@@ -8,11 +23,17 @@
             {{ category.name }}
             <ul>
                 {% for item in category.items|sort(attribute='name') %}
-                    <li><a href="/items/{{item.id}}">{{ item.name }}</a></li>
+                    <li>
+                        {{ item.name }}
+                        <button onclick="render_item_id(this,'{{ item.id }}')">Render Item Id</button>
+
+                    </li>
                 {% endfor %}
             </ul>
         </li>
         {% endfor %}
     </ul>
+
+    <script src="static/js/items.js"></script>    
 {% endblock %}
 </html>

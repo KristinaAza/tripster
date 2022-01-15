@@ -45,7 +45,7 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))    
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     # templates = list of Template objects
 
@@ -82,8 +82,8 @@ class TripItem(db.Model):
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     quantity = db.Column(db.Integer, nullable = False)
-    checked = db.Column(db.Boolean, nullable = False)   
-    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))    
+    checked = db.Column(db.Boolean, nullable = False)
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     trip_id = db.Column(db.Integer, db.ForeignKey("trips.id"))
 
     item = db.relationship("Item", backref="trip_items")
@@ -102,7 +102,7 @@ class Template(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    
+
     user = db.relationship("User", backref="templates")
     items = db.relationship("Item", secondary="template_items", backref="templates")
 
@@ -117,7 +117,7 @@ class TemplateItem(db.Model):
     __tablename__ = "template_items"
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))    
+    item_id = db.Column(db.Integer, db.ForeignKey("items.id"))
     template_id = db.Column(db.Integer, db.ForeignKey("templates.id"))
 
     item = db.relationship("Item", backref="template_items")
@@ -130,7 +130,7 @@ class TemplateItem(db.Model):
 
 
 def connect_to_db(app, db_uri="postgresql:///tripster", echo=True):
-    
+
     app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     app.config["SQLALCHEMY_ECHO"] = echo
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

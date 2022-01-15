@@ -8,7 +8,7 @@ os.system("createdb tripster")
 
 connect_to_db(app)
 db.create_all()
-    
+
 
 user = User(id=1, email="test@test.test", password_hash="Abc")
 category1 = Category(name="Food", user_id=1)
