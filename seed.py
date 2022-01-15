@@ -17,6 +17,7 @@ item1 = Item(name="Banana", category_id=1, user_id=1)
 item2 = Item(name="Bread", category_id=1, user_id=1)
 item3 = Item(name="T-shirt", category_id=2, user_id=1)
 item4 = Item(name="Shoes", category_id=2, user_id=1)
+
 trip1 = Trip(name="Yosemite", trip_date=datetime.date(2010, 5, 1), user_id=1)
 trip2 = Trip(name="San Diego", trip_date=datetime.date(2020, 10, 2), user_id=1)
 trip_item1 = TripItem(quantity=5, checked=False, item_id=1, trip_id=1)
@@ -26,6 +27,14 @@ trip1.trip_items.append(trip_item2)
 trip_item3 = TripItem(quantity=1, checked=False, item_id=3, trip_id=1)
 trip1.trip_items.append(trip_item3)
 
+template1 = Template(name="Camping", user_id=1)
+template2 = Template(name="Backpacking", user_id=1)
+template_item1 = TemplateItem(item_id=1, template_id=1)
+template1.template_items.append(template_item1)
+template_item2 = TemplateItem(item_id=3, template_id=1)
+template1.template_items.append(template_item2)
+template_item4 = TemplateItem(item_id=4, template_id=2)
+template1.template_items.append(template_item4)
 
 
 db.session.add(user)
@@ -37,5 +46,8 @@ db.session.add(item3)
 db.session.add(item4)
 db.session.add(trip1)
 db.session.add(trip2)
+db.session.add(template1)
+db.session.add(template2)
+
 
 db.session.commit()

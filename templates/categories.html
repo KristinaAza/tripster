@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-    <button id="open-form">Add New Category</button>
+    <button id="open-add-form">Add New Category</button>
 
     <form id="add-category" style="visibility:hidden;" method="POST" action="/category">
         <label for="name-field">Name</label>
@@ -12,7 +12,19 @@
     <h2>My Categories</h2>
     <ul id="categories">
     {% for category in categories %}
-        <li><a href="/categories/{{category.id}}">{{ category.name }}</a></li>
+        <li>
+            <a id="link-{{category.id}}" href="/categories/{{category.id}}">{{ category.name }}</a>
+            <input id="id-field-{{category.id}}" class="form-control" value="{{category.id}}" type="hidden" name="id">
+
+            <button id="open-edit-form-{{category.id}}" class="edit-button">Edit</button>
+
+            <form id="form-{{category.id}}" class="edit-category" style="visibility:hidden;" method="POST" action="/category">
+                <label for="name-field">Name</label>
+                <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" placeholder="{{ category.name }}" value="{{ category.name }}">
+                <input type="submit" value="Save" class="btn btn-primary">
+            </form>
+
+        </li>
     {% endfor %}
     </ul>
 

@@ -6,11 +6,24 @@ def add_to_db(item):
 
 
 # categories
+
+# def get_category_by_id(id):
+
+#     category = Category.query.get(id)
+#     return category
+
 def create_category(name, user_id):
 
     category = Category(name=name, user_id=user_id)
     add_to_db(category)
     return category
+
+
+def update_category(id, name):
+
+    db.session.query(Category).filter(Category.id == id).update({"name": name})
+    db.session.commit()
+
 
 def get_all_categories(user_id):
 
@@ -19,18 +32,34 @@ def get_all_categories(user_id):
 
 
 # items
+
 def create_item(name, category_id, user_id):
 
     item = Item(name=name, category_id=category_id, user_id=user_id)
     add_to_db(item)
     return item
 
-def get_all_items(user_id):
 
-    items = Item.query.filter_by(user_id=user_id).all()
-    return items
+# def get_all_items(user_id):
+
+#     items = Item.query.filter_by(user_id=user_id).all()
+#     return items
+
+
+def get_all_items_with_categories(user_id):
+
+    categories = Category.query.options(db.joinedload("items")).order_by(Category.name).all()
+    return categories
+
+
+# def get_items_ordered_alphabetically(user_id):
+
+#     items = Item.query.filter_by(user_id=user_id).order_by('name').all()
+#     return items
+
 
 # trips
+
 def create_trip(name, trip_date, user_id):
 
     trip = Trip(name=name, trip_date=trip_date, user_id=user_id)
@@ -51,6 +80,7 @@ def get_trip_by_id(id):
 
 
 # trip_items
+
 def create_trip_item(item_id, trip_id, quantity, checked):
 
     trip_item = TripItem(item_id=item_id, trip_id=trip_id, quantity=quantity, checked=checked)
@@ -65,6 +95,7 @@ def get_all_trip_items(trip_id):
 
 
 # templates
+
 def create_template(name, user_id):
 
     template = Template(name=name, user_id=user_id)

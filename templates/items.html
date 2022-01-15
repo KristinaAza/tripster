@@ -3,9 +3,16 @@
 {% block body %}    
     <h2>My Items</h2>
     <ul>
-    {% for item in items %}
-        <li><a href="/items/{{item.id}}">{{ item.name }}</a></li>
-    {% endfor %}
+        {% for category in categories %}
+        <li>
+            {{ category.name }}
+            <ul>
+                {% for item in category.items|sort(attribute='name') %}
+                    <li><a href="/items/{{item.id}}">{{ item.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
     </ul>
 {% endblock %}
 </html>

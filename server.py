@@ -58,13 +58,26 @@ def add_category():
     return jsonify({"categoryAdded": new_category})
 
 
+@app.route("/api/edit_category", methods=['POST'])
+def edit_category():
+
+    name = request.get_json().get("name")
+    id = request.get_json().get("id")
+
+    crud.update_category(id, name)
+
+    return jsonify({"name": name})
+
+
 
 @app.route("/items")
 def render_items():
 
-    items = crud.get_all_items(user_id=1)
+    #items = crud.get_all_items(user_id=1)
+    #items = crud.get_items_ordered_alphabetically(user_id=1)
+    categories = crud.get_all_items_with_categories(user_id=1)
 
-    return render_template("items.html", items=items)
+    return render_template("items.html", categories=categories)
 
 
 @app.route("/templates")
