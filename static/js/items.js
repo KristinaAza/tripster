@@ -5,6 +5,6 @@ document.querySelector("#open-add-form").addEventListener("click", () => {
 })
 
 
-function render_item_id(element, id) {
-    element.parentElement.insertAdjacentHTML('beforeend', `<div>${id}</div>`);
-}
+// function render_item_id(element, id) {
+//     element.parentElement.insertAdjacentHTML('beforeend', `<div>${id}</div>`);
+// }

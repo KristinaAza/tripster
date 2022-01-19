@@ -25,7 +25,7 @@
                 {% for item in category.items|sort(attribute='name') %}
                     <li>
                         {{ item.name }}
-                        <button onclick="render_item_id(this,'{{ item.id }}')">Render Item Id</button>
+                        <!-- <button onclick="render_item_id(this,'{{ item.id }}')">Render Item Id</button> -->
 
                     </li>
                 {% endfor %}

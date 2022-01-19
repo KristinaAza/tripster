@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 {% block title %}Trip{% endblock %}
 {% block body %}
-    <button id="open-add-form">Add Item</button>
-
-    <form id="add-item" style="visibility:hidden;" method="POST" action="/{{trip.id}}/trip_item">
-        <label>Item</label>
-        <select name="item">
-            {% for item in items %}
-            <option value="{{ item.id }}">{{ item.name }}</option>
-            {% endfor %}    
-        </select>
-
-        <label for="name-field">Quantity</label>
-        <input id="name-field" class="form-control" type="text" name="quantity">
-        <input type="submit" value="Add" class="btn btn-primary">
-    </form>  
 
     <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
     <ul>
         {% for category in categories %}
             <li>
                 {{ category.name }}
+                {% if category.items %}
+                    <button onclick="openAddForm(this)">Add Item</button>
+
+                    <form class="add-item" style="visibility:hidden;" method="POST" action="/{{trip.id}}/trip_item">
+                        
+                        <label>Item</label>
+                        <select name="item">
+                            {% for item in category.items %}
+                            <option value="{{ item.id }}">{{ item.name }}</option>
+                            {% endfor %}    
+                        </select>
+                
+                        <label for="name-field">Quantity</label>
+                        <input id="name-field" class="form-control" type="text" name="quantity">
+                        <input type="submit" value="Add" class="btn btn-primary">
+                    </form>
+                {% endif %} 
                 <ul>
                     {% for item in category.items|sort(attribute='name') %}
                         {% if item in trip.items %}

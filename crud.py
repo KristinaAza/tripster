@@ -95,7 +95,7 @@ def get_all_trip_items(trip_id):
 
 def get_all_trip_items_with_categories(trip_id):
 
-    categories = Category.query.options(db.joinedload("items").options(db.joinedload("trip_items").options(db.joinedload("trip")))).filter(TripItem.trip_id == trip_id).order_by(Category.name).all()
+    categories = Category.query.options(db.joinedload("items").options(db.joinedload("trip_items"))).filter(TripItem.trip_id == trip_id).order_by(Category.name).all()
     return categories
 
 
@@ -133,6 +133,5 @@ def create_template_item(item_id, template_id):
 
 def get_all_template_items_with_categories(template_id):
 
-    #categories = db.session.query(Category, Item, Template).join(Item, Item.category_id == Category.id).join(TemplateItem).join(Template).filter(TemplateItem.template_id == template_id).order_by(Category.name).all()
-    categories = Category.query.options(db.joinedload("items").options(db.joinedload("template_items").options(db.joinedload("template")))).filter(TemplateItem.template_id == template_id).order_by(Category.name).all()
+    categories = Category.query.options(db.joinedload("items").options(db.joinedload("template_items"))).filter(TemplateItem.template_id == template_id).order_by(Category.name).all()
     return categories
