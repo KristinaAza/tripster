@@ -26,15 +26,20 @@ trip_item2 = TripItem(quantity=3, checked=False, item_id=2, trip_id=1)
 trip1.trip_items.append(trip_item2)
 trip_item3 = TripItem(quantity=1, checked=False, item_id=3, trip_id=1)
 trip1.trip_items.append(trip_item3)
+trip_item4 = TripItem(quantity=2, checked=False, item_id=4, trip_id=2)
+trip2.trip_items.append(trip_item4)
+
 
 template1 = Template(name="Camping", user_id=1)
 template2 = Template(name="Backpacking", user_id=1)
 template_item1 = TemplateItem(item_id=1, template_id=1)
 template1.template_items.append(template_item1)
-template_item2 = TemplateItem(item_id=3, template_id=1)
+template_item2 = TemplateItem(item_id=2, template_id=1)
 template1.template_items.append(template_item2)
+template_item3 = TemplateItem(item_id=3, template_id=1)
+template1.template_items.append(template_item3)
 template_item4 = TemplateItem(item_id=4, template_id=2)
-template1.template_items.append(template_item4)
+template2.template_items.append(template_item4)
 
 
 db.session.add(user)

@@ -22,9 +22,11 @@ def render_trips():
 def render_trip(id):
 
     trip = crud.get_trip_by_id(id)
-    trip_items = crud.get_all_trip_items(id)
+    # trip_items = crud.get_all_trip_items(id)
+    #items = crud.get_items_ordered_alphabetically(user_id=1)
+    categories = crud.get_all_trip_items_with_categories(id)
 
-    return render_template("trip.html", trip=trip, trip_items=trip_items)
+    return render_template("trip.html", trip=trip, categories=categories)# trip_items=trip_items, items=items
 
 
 @app.route("/categories")
@@ -89,6 +91,16 @@ def add_item_with_rerender():
     return redirect("/items")
 
 
+@app.route("/<trip_id>/trip_item", methods=['POST'])
+def add_trip_item_with_rerender(trip_id):
+
+    item_id = request.form.get("item")
+    quantity = request.form.get("quantity")
+    crud.create_trip_item(item_id, trip_id, quantity, False)
+
+    return redirect(f"/trips/{trip_id}")
+
+
 
 @app.route("/templates")
 def render_templates():
@@ -96,6 +108,25 @@ def render_templates():
     templates = crud.get_all_templates(user_id=1)
 
     return render_template("templates.html", templates=templates)
+
+
+@app.route("/templates/<id>")
+def render_specific_template(id):
+
+    template = crud.get_template_by_id(id)
+    categories = crud.get_all_template_items_with_categories(id)
+    
+    return render_template("template.html", template=template, categories=categories)
+
+
+@app.route("/<template_id>/template_item", methods=['POST'])
+def add_template_item_with_rerender(template_id):
+
+    item_id = request.form.get("item")
+    crud.create_template_item(item_id, template_id)
+
+    return redirect(f"/templates/{template_id}")
+
 
 
 if __name__ == "__main__":

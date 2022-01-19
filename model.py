@@ -69,6 +69,8 @@ class Trip(db.Model):
     # trip_items= list of TripItem object
 
     user = db.relationship("User", backref="trips")
+    items = db.relationship("Item", secondary="trip_items", backref="trips")
+
 
     def __repr__(self):
         """Returns descriptive representation for printing"""
@@ -126,7 +128,7 @@ class TemplateItem(db.Model):
     def __repr__(self):
         """Returns descriptive representation for printing"""
 
-        return f"<TempatetItem id={self.id}>"
+        return f"<TemplateItem id={self.id}>"
 
 
 def connect_to_db(app, db_uri="postgresql:///tripster", echo=True):

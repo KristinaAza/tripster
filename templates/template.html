@@ -1,31 +1,28 @@
 {% extends 'base.html' %}
-{% block title %}Trip{% endblock %}
+{% block title %}Template{% endblock %}
 {% block body %}
     <button id="open-add-form">Add Item</button>
 
-    <form id="add-item" style="visibility:hidden;" method="POST" action="/{{trip.id}}/trip_item">
+    <form id="add-item" style="visibility:hidden;" method="POST" action="/{{template.id}}/template_item">
         <label>Item</label>
         <select name="item">
             {% for item in items %}
             <option value="{{ item.id }}">{{ item.name }}</option>
             {% endfor %}    
         </select>
-
-        <label for="name-field">Quantity</label>
-        <input id="name-field" class="form-control" type="text" name="quantity">
         <input type="submit" value="Add" class="btn btn-primary">
     </form>  
 
-    <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
+    <h2>{{ template.name }} Template {{ template.id }}</h2>
     <ul>
         {% for category in categories %}
             <li>
                 {{ category.name }}
                 <ul>
                     {% for item in category.items|sort(attribute='name') %}
-                        {% if item in trip.items %}
+                        {% if item in template.items %}
                         <li>
-                            {{ item.name }} {{ item.trip_items[0].quantity }} {{ item.trip_items[0].checked }}
+                            {{ item.name }}
                         </li>
                         {% endif %}
                     {% endfor %}
@@ -33,7 +30,7 @@
             </li>
         {% endfor %}
     </ul>
-
-    <script src="/static/js/trip.js"></script>
+    
+    <script src="/static/js/template.js"></script>
 {% endblock %}
 </html>

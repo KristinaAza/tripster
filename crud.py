@@ -52,10 +52,10 @@ def get_all_items_with_categories(user_id):
     return categories
 
 
-# def get_items_ordered_alphabetically(user_id):
+def get_items_ordered_alphabetically(user_id):
 
-#     items = Item.query.filter_by(user_id=user_id).order_by('name').all()
-#     return items
+    items = Item.query.filter_by(user_id=user_id).order_by('name').all()
+    return items
 
 
 # trips
@@ -93,6 +93,12 @@ def get_all_trip_items(trip_id):
     trip_items = TripItem.query.filter_by(trip_id=trip_id).all()
     return trip_items
 
+def get_all_trip_items_with_categories(trip_id):
+
+    categories = Category.query.options(db.joinedload("items").options(db.joinedload("trip_items").options(db.joinedload("trip")))).filter(TripItem.trip_id == trip_id).order_by(Category.name).all()
+    return categories
+
+
 
 # templates
 
@@ -107,3 +113,26 @@ def get_all_templates(user_id):
 
     templates = Template.query.filter_by(user_id=user_id).all()
     return templates
+
+
+def get_template_by_id(id):
+
+    template = Template.query.get(id)
+    return template
+
+
+
+# template_items
+
+def create_template_item(item_id, template_id):
+
+    template_item = TemplateItem(item_id=item_id, template_id=template_id)
+    add_to_db(template_item)
+    return template_item
+
+
+def get_all_template_items_with_categories(template_id):
+
+    #categories = db.session.query(Category, Item, Template).join(Item, Item.category_id == Category.id).join(TemplateItem).join(Template).filter(TemplateItem.template_id == template_id).order_by(Category.name).all()
+    categories = Category.query.options(db.joinedload("items").options(db.joinedload("template_items").options(db.joinedload("template")))).filter(TemplateItem.template_id == template_id).order_by(Category.name).all()
+    return categories
