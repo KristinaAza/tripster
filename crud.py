@@ -81,7 +81,7 @@ def get_trip_by_id(id):
 
 # trip_items
 
-def create_trip_item(item_id, trip_id, quantity, checked):
+def create_trip_item(item_id, trip_id, quantity=1, checked=False):
 
     trip_item = TripItem(item_id=item_id, trip_id=trip_id, quantity=quantity, checked=checked)
     add_to_db(trip_item)

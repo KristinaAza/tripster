@@ -43,6 +43,21 @@ def add_trip_with_rerender():
     return redirect("/trips")
 
 
+@app.route("/<template_id>/trip", methods=['POST'])
+def create_trip_with_rerender(template_id):
+
+    name = request.form.get("name")
+    str_date = request.form.get("date")
+    trip_date = date.fromisoformat(str_date)
+    
+    trip = crud.create_trip(name, trip_date, user_id=1)
+    template = crud.get_template_by_id(template_id)
+    
+    for item in template.items:
+        crud.create_trip_item(item.id, trip.id)
+
+    return redirect(f"/trips/{trip.id}")
+
 @app.route("/categories")
 def render_categories():
 
