@@ -1,11 +1,21 @@
 {% extends 'base.html' %}
 {% block title %}Templates{% endblock %}
-{% block body %}    
+{% block body %}
+    <button id="open-add-form">Add New Template</button>    
+    
+    <form id="add-template" style="visibility:hidden;" method="POST" action="/template">
+        <label for="name-field">Name</label>
+        <input id="name-field" class="form-control" type="text" name="name">
+        <input type="submit" value="Add" class="btn btn-primary">
+    </form>  
+    
     <h2>My Templates</h2>
     <ul>
     {% for template in templates %}
         <li><a href="/templates/{{template.id}}">{{ template.name }}</a></li>
     {% endfor %}
     </ul>
+
+    <script src="static/js/templates.js"></script>
 {% endblock %}
 </html>

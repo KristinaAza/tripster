@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 {% block title %}Trips{% endblock %}
 {% block body %}
-    <button id="add-trip">Add New Trip</button>    
+    <button id="open-add-form">Add New Trip</button>    
     
-    <div id="form"></div>
+    <form id="add-trip" style="visibility:hidden;" method="POST" action="/trip">
+        <label for="name-field">Name</label>
+        <input id="name-field" class="form-control" type="text" name="name">
+        <label for="date-field">Date</label>
+        <input id="date-field" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD">
+        <input type="submit" value="Add" class="btn btn-primary">
+    </form>  
     
     <h2>My Trips</h2>
     <ul>
@@ -11,5 +17,7 @@
         <li><a href="/trips/{{trip.id}}">{{ trip.name }}</a></li>
     {% endfor %}
     </ul>
+
+    <script src="static/js/trips.js"></script>
 {% endblock %}
 </html>
