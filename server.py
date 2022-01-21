@@ -89,6 +89,15 @@ def add_category():
     return jsonify({"categoryAdded": new_category})
 
 
+@app.route("/api/trip_item", methods=['POST'])
+def change_checked_trip_item():
+
+    id = request.get_json().get("id")
+    status = crud.toggle_checked(id)
+
+    return jsonify({"checkedStatus": status})
+
+
 @app.route("/api/edit_category", methods=['POST'])
 def edit_category():
 

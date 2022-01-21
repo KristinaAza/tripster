@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Trip{% endblock %}
 {% block body %}
-
-    <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
+    <h2>{{ trip.name }} Trip {{ trip.trip_date }} trip_id = {{ trip.id }}</h2>
     <ul>
         {% for category in categories %}
             <li>
@@ -28,7 +27,17 @@
                     {% for item in category.items|sort(attribute='name') %}
                         {% if item in trip.items %}
                         <li>
-                            {{ item.name }} {{ item.trip_items[0].quantity }} {{ item.trip_items[0].checked }}
+                            {% for trip_item in item.trip_items %}
+                                {% if trip_item.trip_id == trip.id %}                                 
+                                    {% if trip_item.checked %}
+                                        <span style="text-decoration:line-through;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                        <input type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    {% else %}
+                                        <span style="text-decoration:none;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                        <input type="checkbox" onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
                         </li>
                         {% endif %}
                     {% endfor %}
