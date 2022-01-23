@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Trip{% endblock %}
 {% block body %}
-    <h2>{{ trip.name }} Trip {{ trip.trip_date }} trip_id = {{ trip.id }}</h2>
+    <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
     <ul>
         {% for category in categories %}
             <li>
@@ -21,6 +21,7 @@
                         <label for="name-field">Quantity</label>
                         <input id="name-field" class="form-control" type="text" name="quantity">
                         <input type="submit" value="Add" class="btn btn-primary">
+                        <button type="button" onclick="close_form(this)">Cancel</button>
                     </form>
                 {% endif %} 
                 <ul>
@@ -45,7 +46,6 @@
             </li>
         {% endfor %}
     </ul>
-
     <script src="/static/js/trip.js"></script>
 {% endblock %}
 </html>

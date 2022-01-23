@@ -9,12 +9,13 @@
         <label for="date-field">Date</label>
         <input id="date-field" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD">
         <input type="submit" value="Add" class="btn btn-primary">
+        <button type="button" onclick="close_form(this)">Cancel</button>
     </form>  
     
     <h2>My Trips</h2>
     <ul>
     {% for trip in trips %}
-        <li><a href="/trips/{{trip.id}}">{{ trip.name }}</a></li>
+        <li><a href="/trips/{{trip.id}}">{{ trip.name }} {{trip.trip_date}}</a></li>
     {% endfor %}
     </ul>
 

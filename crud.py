@@ -27,7 +27,7 @@ def update_category(id, name):
 
 def get_all_categories(user_id):
 
-    categories = Category.query.filter_by(user_id=user_id).all()
+    categories = Category.query.filter_by(user_id=user_id).order_by(Category.name).all()
     return categories
 
 
@@ -48,7 +48,7 @@ def create_item(name, category_id, user_id):
 
 def get_all_items_with_categories(user_id):
 
-    categories = Category.query.options(db.joinedload("items")).order_by(Category.name).all()
+    categories = Category.query.options(db.joinedload("items")).filter_by(user_id=user_id).order_by(Category.name).all()
     return categories
 
 
@@ -69,7 +69,7 @@ def create_trip(name, trip_date, user_id):
 
 def get_all_trips(user_id):
 
-    trips = Trip.query.filter_by(user_id=user_id).all()
+    trips = Trip.query.filter_by(user_id=user_id).order_by(Trip.trip_date).all()
     return trips
 
 
@@ -109,11 +109,6 @@ def toggle_checked(trip_item_id):
 
     trip_item = get_trip_item_by_id(trip_item_id)
     trip_item.checked = not trip_item.checked
-
-    print(["/n"] * 20)
-    print(f"trip_item.checked from toggle_checked() {trip_item.checked}")
-    print("/n" * 20)
-
     add_to_db(trip_item)
     return trip_item.checked
 
