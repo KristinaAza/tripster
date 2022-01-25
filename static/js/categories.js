@@ -24,7 +24,16 @@ document.querySelector("#add-category").addEventListener("submit", evt => {
     .then(responseJson => {
         const categoryAdded = responseJson.categoryAdded;
         const categoryElement = document.createElement("li");
-        categoryElement.innerHTML= `<a id="link-${categoryAdded.id}" href="/categories/${categoryAdded.id}">${categoryAdded.name}</a><input id="id-field-${categoryAdded.id}" class="form-control" value="${categoryAdded.id}" type="hidden" name="id"> <button id="open-edit-form-${categoryAdded.id}" class="edit-button" onclick="">Edit</button> <form id="form-${categoryAdded.id}" class="edit-category" style="visibility:hidden;" method="POST" action="/category"> <label for="name-field">Name</label> <input id="name-${categoryAdded.id}-field" class="form-control" type="text" name="name" placeholder="${categoryAdded.id}" value="${categoryAdded.id}"> <input type="submit" value="Save" class="btn btn-primary"><button type="button" onclick="close_form(this)">Cancel</button> </form>`;
+        categoryElement.innerHTML= `<a id="link-${categoryAdded.id}" href="/categories/${categoryAdded.id}">${categoryAdded.name}</a>
+                                    <input id="id-field-${categoryAdded.id}" class="form-control" value="${categoryAdded.id}" type="hidden" name="id">
+                                    <button id="open-edit-form-${categoryAdded.id}" class="edit-button" onclick="">Edit</button>
+                                    <form id="form-${categoryAdded.id}" class="edit-category" style="visibility:hidden;" method="POST" action="/category">
+                                        <label for="name-field">Name</label>
+                                        <input id="name-${categoryAdded.id}-field" class="form-control" type="text" name="name" value="${categoryAdded.id}">
+                                        <input type="submit" value="Save" class="btn btn-primary">
+                                        <button type="button" onclick="close_form(this)">Cancel</button>
+                                    </form>`;
+
         const element =document.querySelector('#categories');
         // document.querySelector('#categories').append(categoryElement);
         element.insertBefore(categoryElement, element.childNodes[0] || null);

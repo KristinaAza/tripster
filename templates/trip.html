@@ -27,19 +27,19 @@
                 <ul>
                     {% for item in category.items|sort(attribute='name') %}
                         {% if item in trip.items %}
-                        <li>
+                        <div>
                             {% for trip_item in item.trip_items %}
                                 {% if trip_item.trip_id == trip.id %}                                 
                                     {% if trip_item.checked %}
-                                        <span style="text-decoration:line-through;">{{ item.name }} {{ trip_item.quantity }}</span>
-                                        <input type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <input type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <span style="text-decoration:line-through;">{{ item.name }} {{ trip_item.quantity }}</span>
                                     {% else %}
-                                        <span style="text-decoration:none;">{{ item.name }} {{ trip_item.quantity }}</span>
-                                        <input type="checkbox" onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <input type="checkbox" onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <span style="text-decoration:none;">{{ item.name }} {{ trip_item.quantity }}</span>
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
-                        </li>
+                        </div>
                         {% endif %}
                     {% endfor %}
                 </ul>

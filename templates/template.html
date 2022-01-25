@@ -12,7 +12,7 @@
 
                     <form class="add-item" style="visibility:hidden;" method="POST" action="/{{template.id}}/template_item">
                         <label>Item</label>
-                        <select name="item">
+                        <select name="item_id">
                             {% for item in category.items %}
                             <option value="{{ item.id }}">{{ item.name }}</option>
                             {% endfor %}    

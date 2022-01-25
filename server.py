@@ -1,6 +1,6 @@
+from datetime import date
 from flask import Flask, render_template, redirect, request, jsonify
 from model import connect_to_db
-from datetime import date
 import crud
 
 app = Flask(__name__)
@@ -23,13 +23,13 @@ def render_trips():
 def render_trip(id):
 
     trip = crud.get_trip_by_id(id)
-    
+
     if not trip.items:
         categories = crud.get_all_categories(user_id=1)
     else:
         categories = crud.get_all_trip_items_with_categories(id)
 
-    return render_template("trip.html", trip=trip, categories=categories)# trip_items=trip_items, items=items
+    return render_template("trip.html", trip=trip, categories=categories)
 
 
 @app.route("/trip", methods=['POST'])
@@ -38,7 +38,7 @@ def add_trip_with_rerender():
     name = request.form.get("name")
     str_date = request.form.get("date")
     trip_date = date.fromisoformat(str_date)
-    
+
     crud.create_trip(name, trip_date, user_id=1)
     return redirect("/trips")
 
@@ -49,10 +49,10 @@ def create_trip_with_rerender(template_id):
     name = request.form.get("name")
     str_date = request.form.get("date")
     trip_date = date.fromisoformat(str_date)
-    
+
     trip = crud.create_trip(name, trip_date, user_id=1)
     template = crud.get_template_by_id(template_id)
-    
+
     for item in template.items:
         crud.create_trip_item(item.id, trip.id)
 
@@ -133,8 +133,10 @@ def add_item_with_rerender():
 def add_trip_item_with_rerender(trip_id):
 
     item_id = request.form.get("item")
-    quantity = request.form.get("quantity")
-    crud.create_trip_item(item_id, trip_id, quantity, False)
+
+    if not crud.get_trip_item_by_trip_id_item_id(trip_id, item_id):
+        quantity = request.form.get("quantity")
+        crud.create_trip_item(item_id, trip_id, quantity, False)
 
     return redirect(f"/trips/{trip_id}")
 
@@ -152,7 +154,7 @@ def render_templates():
 def add_template_with_rerender():
 
     name = request.form.get("name")
-    
+
     crud.create_template(name, user_id=1)
     return redirect("/templates")
 
@@ -161,19 +163,19 @@ def add_template_with_rerender():
 def render_specific_template(id):
 
     template = crud.get_template_by_id(id)
-    
+
     if not template.items:
         categories = crud.get_all_categories(user_id=1)
     else:
         categories = crud.get_all_template_items_with_categories(id)
-    
+
     return render_template("template.html", template=template, categories=categories)
 
 
 @app.route("/<template_id>/template_item", methods=['POST'])
 def add_template_item_with_rerender(template_id):
 
-    item_id = request.form.get("item")
+    item_id = request.form.get("item_id")
     crud.create_template_item(item_id, template_id)
 
     return redirect(f"/templates/{template_id}")
