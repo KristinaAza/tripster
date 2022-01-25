@@ -10,7 +10,7 @@
                 {% if category.items%}
                     <button onclick="openAddForm(this)">Add Item</button>
 
-                    <form class="add-item" style="visibility:hidden;" method="POST" action="/{{template.id}}/template_item">
+                    <form class="add-item" style="display:none;" method="POST" action="/{{template.id}}/template_item">
                         <label>Item</label>
                         <select name="item_id">
                             {% for item in category.items %}

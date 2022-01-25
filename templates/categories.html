@@ -19,7 +19,7 @@
 
             <button id="open-edit-form-{{category.id}}" class="edit-button">Edit</button>
 
-            <form id="form-{{category.id}}" class="edit-category" style="visibility:hidden;" method="POST" action="/category">
+            <form id="form-{{category.id}}" class="edit-category" style="display:none;" method="POST" action="/category">
                 <label for="name-field">Name</label>
                 <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" placeholder="{{ category.name }}" value="{{ category.name }}">
                 <input type="submit" value="Save" class="btn btn-primary">

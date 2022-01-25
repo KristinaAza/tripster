@@ -3,7 +3,7 @@
 {% block body %}
     <button id="open-add-form">Add New Template</button>    
     
-    <form id="add-template" style="visibility:hidden;" method="POST" action="/template">
+    <form id="add-template" style="display:none;" method="POST" action="/template">
         <label for="name-field">Name</label>
         <input id="name-field" class="form-control" type="text" name="name">
         <input type="submit" value="Add" class="btn btn-primary">
@@ -17,7 +17,7 @@
             <a href="/templates/{{template.id}}">{{ template.name }}</a>
             <button onclick="openAddForm(this)">Create Trip</button>
 
-            <form class="create-trip" style="visibility:hidden;" method="POST" action="/{{template.id}}/trip">
+            <form class="create-trip" style="display:none;" method="POST" action="/{{template.id}}/trip">
                 <label for="name-field">Name</label>
                 <input id="name-field" class="form-control" type="text" name="name">
                 <label for="date-field">Date</label>

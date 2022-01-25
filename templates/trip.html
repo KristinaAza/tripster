@@ -2,6 +2,9 @@
 {% block title %}Trip{% endblock %}
 {% block body %}
     <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
+    
+    <button onclick="toggle(this)">Hide checked out items</button>
+    
     <ul>
         {% for category in categories %}
             <li>
@@ -9,8 +12,8 @@
                 {% if category.items %}
                     <button onclick="openAddForm(this)">Add Item</button>
 
-                    <form class="add-item" style="visibility:hidden;" method="POST" action="/{{trip.id}}/trip_item">
-                        
+                    <form class="add-item" style="display:none;" method="POST" action="/{{trip.id}}/trip_item">
+                    
                         <label>Item</label>
                         <select name="item">
                             {% for item in category.items %}
@@ -31,11 +34,11 @@
                             {% for trip_item in item.trip_items %}
                                 {% if trip_item.trip_id == trip.id %}                                 
                                     {% if trip_item.checked %}
-                                    <input type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span style="text-decoration:line-through;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                    <input class="hide" style="display:inline;" type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <span class="hide" style="text-decoration:line-through; display:inline;">{{ item.name }} {{ trip_item.quantity }}</span>
                                     {% else %}
-                                    <input type="checkbox" onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span style="text-decoration:none;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                    <input type="checkbox" style="display:inline;" onclick="changeChecked(this, '{{ trip_item.id }}')">
+                                    <span style="text-decoration:none; display:inline;">{{ item.name }} {{ trip_item.quantity }}</span>
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
