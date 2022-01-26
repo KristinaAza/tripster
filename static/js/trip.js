@@ -26,7 +26,6 @@ function changeChecked(element, id) {
             parent.querySelector('span').classList.remove('hide');
             element.classList.remove('hide');
         }
-        console.log("changeChecked is done running")
     })
 }
 

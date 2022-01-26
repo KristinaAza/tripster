@@ -3,7 +3,7 @@
 {% block body %}
     <button id="open-add-form">Add New Category</button>
 
-    <form id="add-category" style="visibility:hidden;" method="POST" action="/category">
+    <form id="add-category" style="display:none;" method="POST" action="/category">
         <label for="name-field">Name</label>
         <input id="name-field" class="form-control" type="text" name="name">
         <input type="submit" value="Add" class="btn btn-primary">

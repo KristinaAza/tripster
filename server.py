@@ -104,7 +104,7 @@ def edit_category():
     name = request.get_json().get("name")
     id = request.get_json().get("id")
 
-    crud.update_category(id, name)
+    crud.update_category(id, name, user_id=1)
 
     return jsonify({"name": name})
 
@@ -128,6 +128,15 @@ def add_item_with_rerender():
 
     return redirect("/items")
 
+
+@app.route("/item/<item_id>/edit", methods=['POST'])
+def edit_item_with_rerender(item_id):
+
+    new_category_id = request.form.get("category")
+    new_name = request.form.get("name")
+    crud.update_item(item_id, new_category_id, new_name, user_id=1)
+    
+    return redirect("/items")
 
 @app.route("/<trip_id>/trip_item", methods=['POST'])
 def add_trip_item_with_rerender(trip_id):

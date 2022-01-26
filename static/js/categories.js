@@ -1,13 +1,13 @@
 //  Adding a category
 
 document.querySelector("#open-add-form").addEventListener("click", () => {   
-    document.querySelector("#add-category").setAttribute("style", "visibility:visible;");
+    document.querySelector("#add-category").setAttribute("style", "display:block;");
 })
 
 document.querySelector("#add-category").addEventListener("submit", evt => {
     evt.preventDefault();
 
-    document.querySelector("#add-category").setAttribute("style", "visibility:hidden;");
+    document.querySelector("#add-category").setAttribute("style", "display:none;");
 
     const name = document.querySelector("#name-field").value;
     document.getElementById("add-category").reset();
@@ -56,7 +56,7 @@ function createEventListenersToEditCategory() {
         const id = editButton.id[editButton.id.length - 1];
 
         editButton.addEventListener("click", () => {   
-            document.querySelector(`#form-${id}`).setAttribute("style", "visibility:visible;");
+            document.querySelector(`#form-${id}`).setAttribute("style", "display:block;");
         })
     }
 
@@ -70,7 +70,7 @@ function createEventListenersToEditCategory() {
             const id = form.id[form.id.length - 1];
             // const id = document.querySelector(`#id-field-${id}`).value;
 
-            document.querySelector(`#form-${id}`).setAttribute("style", "visibility:hidden;");
+            document.querySelector(`#form-${id}`).setAttribute("style", "display:none;");
             
             
             const name = document.querySelector(`#name-${id}-field`).value;

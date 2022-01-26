@@ -19,9 +19,9 @@ def create_category(name, user_id):
     return category
 
 
-def update_category(id, name):
+def update_category(id, name, user_id):
 
-    db.session.query(Category).filter(Category.id == id).update({"name": name})
+    db.session.query(Category).filter(user_id == user_id).filter(Category.id == id).update({"name": name})
     db.session.commit()
 
 
@@ -39,6 +39,11 @@ def create_item(name, category_id, user_id):
     add_to_db(item)
     return item
 
+
+def update_item(item_id, category_id, name, user_id):
+
+    db.session.query(Item).filter(user_id == user_id).filter(Item.id == item_id).update({"category_id": category_id, "name": name})
+    db.session.commit()
 
 # def get_all_items(user_id):
 
