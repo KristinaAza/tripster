@@ -1,16 +1,44 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-    <button id="open-add-form">Add New Category</button>
+    <!-- <button id="open-add-form">Add New Category</button>
 
     <form id="add-category" style="display:none;" method="POST" action="/category">
         <label for="name-field">Name</label>
         <input id="name-field" class="form-control" type="text" name="name">
         <input type="submit" value="Add" class="btn btn-primary">
         <button type="button" onclick="close_form(this)">Cancel</button>
-    </form>
+    </form> -->
 
-    <h2>My Categories</h2>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add New Category
+    </button>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-category" method="POST" action="/category">
+                    <label for="name-field">Name</label>
+                    <input id="name-field" class="form-control" type="text" name="name">
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <h2>Categories</h2>
     <ul id="categories">
     {% for category in categories %}
         <li>

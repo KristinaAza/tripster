@@ -29,10 +29,7 @@ function changeChecked(element, id) {
     })
 }
 
-function toggle(button) {
-    const text = button.innerText;
-    button.innerText = text === "Show All Items" ? "Hide checked out items" : "Show All Items";
-
+function toggle(checkbox) { 
     const items_to_hide = document.querySelectorAll(".hide");
     for (const item of items_to_hide) {
         item.style.display = (item.style.display === "inline") ? "none" : "inline";

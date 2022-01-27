@@ -1,8 +1,8 @@
 //  Adding a category
 
-document.querySelector("#open-add-form").addEventListener("click", () => {   
-    document.querySelector("#add-category").setAttribute("style", "display:block;");
-})
+// document.querySelector("#open-add-form").addEventListener("click", () => {   
+//     document.querySelector("#add-category").setAttribute("style", "display:block;");
+// })
 
 document.querySelector("#add-category").addEventListener("submit", evt => {
     evt.preventDefault();

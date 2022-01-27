@@ -1,14 +1,43 @@
 {% extends 'base.html' %}
-{% block title %}Template{% endblock %}
+{% block title %}{{ template.name }} Template{% endblock %}
 {% block body %}
-    
-    <h2>{{ template.name }} Template {{ template.id }}</h2>
+     <!-- Button trigger modal -->
+     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create Trip
+    </button>
+
+    <!-- Add Trip Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Create Trip</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="add-trip" method="POST" action="/{{template.id}}/trip">
+                    <label for="name-field">Name</label>
+                    <input id="name-field" class="form-control" type="text" name="name">
+                    <label for="date-field">Date</label>
+                    <input id="date-field" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD">
+                </form>
+            
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>    
+
+    <h2>{{ template.name }} Template</h2>
     <ul>
         {% for category in categories %}
             <li>
                 {{ category.name }}
                 {% if category.items%}
-                    <button onclick="openAddForm(this)">Add Item</button>
+                    <!-- <button onclick="openAddForm(this)">Add Item</button>
 
                     <form class="add-item" style="display:none;" method="POST" action="/{{template.id}}/template_item">
                         <label>Item</label>
@@ -19,7 +48,38 @@
                         </select>
                         <input type="submit" value="Add" class="btn btn-primary">
                         <button type="button" onclick="close_form(this)">Cancel</button>
-                    </form>  
+                    </form> -->
+                    
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}">
+                        Add Item
+                    </button>
+
+                    <!-- Add Trip Modal -->
+                    <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="add-item" method="POST" action="/{{template.id}}/template_item">
+                                    <label>Item</label>
+                                    <select name="item_id">
+                                        {% for item in category.items %}
+                                        <option value="{{ item.id }}">{{ item.name }}</option>
+                                        {% endfor %}    
+                                    </select>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 {% endif %}
 
                 <ul>
