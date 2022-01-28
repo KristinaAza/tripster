@@ -77,6 +77,12 @@ def create_trip(name, trip_date, user_id):
     return trip
 
 
+def update_trip(id, name, trip_date, user_id):
+
+    db.session.query(Trip).filter(user_id == user_id).filter(Trip.id == id).update({"name": name, "trip_date": trip_date})
+    db.session.commit()
+
+
 def get_all_trips(user_id):
 
     trips = Trip.query.filter_by(user_id=user_id).order_by(Trip.trip_date).all()
@@ -146,6 +152,12 @@ def create_template(name, user_id):
     template = Template(name=name, user_id=user_id)
     add_to_db(template)
     return template
+
+
+def update_template(id, name, user_id):
+    
+    db.session.query(Template).filter(user_id == user_id).filter(Template.id == id).update({"name": name})
+    db.session.commit()
 
 
 def get_all_templates(user_id):

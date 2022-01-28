@@ -1,6 +1,28 @@
-function openAddForm(element) {
-    element.parentElement.querySelector('.add-item').setAttribute("style", "display:block;");
+
+function edit(saveButton, trip_id) {
+    const name = saveButton.parentElement.parentElement.querySelector('#name-field').value;
+    const date = saveButton.parentElement.parentElement.querySelector('#date-field').value;
+
+    fetch('/api/edit_trip', {
+        method: 'POST',
+        body: JSON.stringify({trip_id, name, date}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        const name = responseJson.name;
+        let tripDate = new Date(responseJson.trip_date);
+        tripDate = tripDate.toISOString().split('T')[0];
+
+        document.querySelector('h2').innerHTML = `${name} Trip ${tripDate}`;
+        document.querySelector('title').innerText = `${name} Trip`;
+        document.querySelector('nav .active').innerText = `${name} Trip`;
+
+    })
 }
+
 
 function changeChecked(element, id) {
     let checkedStatus;

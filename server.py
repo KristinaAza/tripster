@@ -32,6 +32,19 @@ def render_trip(id):
     return render_template("trip.html", trip=trip, categories=categories)
 
 
+@app.route("/api/edit_trip", methods=['POST'])
+def edit_trip():
+    id = request.get_json().get("trip_id")
+    name = request.get_json().get("name")
+    str_date = request.get_json().get("date")
+    trip_date = date.fromisoformat(str_date)
+
+    crud.update_trip(id, name, trip_date, user_id=1)
+
+    return jsonify({"name": name, "trip_date": trip_date})
+
+
+
 @app.route("/trip", methods=['POST'])
 def add_trip_with_rerender():
 
@@ -102,7 +115,7 @@ def change_checked_trip_item():
 def edit_category():
 
     name = request.get_json().get("name")
-    id = request.get_json().get("id")
+    id = request.get_json().get("category_id")
 
     crud.update_category(id, name, user_id=1)
 
@@ -166,6 +179,18 @@ def add_template_with_rerender():
 
     crud.create_template(name, user_id=1)
     return redirect("/templates")
+
+
+@app.route("/api/edit_template", methods=['POST'])
+def edit_template():
+    id = request.get_json().get("template_id")
+    name = request.get_json().get("name")
+
+    crud.update_template(id, name, user_id=1)
+
+    return jsonify({"name": name})
+
+
 
 
 @app.route("/templates/<id>")

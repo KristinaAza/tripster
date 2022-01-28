@@ -1,9 +1,5 @@
 //  Adding a category
 
-// document.querySelector("#open-add-form").addEventListener("click", () => {   
-//     document.querySelector("#add-category").setAttribute("style", "display:block;");
-// })
-
 document.querySelector("#add-category").addEventListener("submit", evt => {
     evt.preventDefault();
 
@@ -11,8 +7,7 @@ document.querySelector("#add-category").addEventListener("submit", evt => {
 
     const name = document.querySelector("#name-field").value;
     document.getElementById("add-category").reset();
-    // document.getElementById("add-category").value = ''; doesn't clear the input box
-
+ 
     fetch('/api/category', {
         method: 'POST',
         body: JSON.stringify({name}),
@@ -35,7 +30,7 @@ document.querySelector("#add-category").addEventListener("submit", evt => {
                                     </form>`;
 
         const element =document.querySelector('#categories');
-        // document.querySelector('#categories').append(categoryElement);
+  
         element.insertBefore(categoryElement, element.childNodes[0] || null);
         document.querySelector(`#name-${categoryAdded.id}-field`).value = `${categoryAdded.name}`
         createEventListenersToEditCategory();
@@ -43,54 +38,22 @@ document.querySelector("#add-category").addEventListener("submit", evt => {
 })
 
 
-// TODO: Find a different way to pass category id from html page to js 
-
 
 //  Editting a category
 
-function createEventListenersToEditCategory() {
-    const editButtons = document.querySelectorAll(".edit-button");
-    
-    for (const editButton of editButtons) {
-
-        const id = editButton.id[editButton.id.length - 1];
-
-        editButton.addEventListener("click", () => {   
-            document.querySelector(`#form-${id}`).setAttribute("style", "display:block;");
-        })
-    }
-
-    const editForms = document.querySelectorAll(".edit-category");
-
-    for (const form of editForms) {
-
-        form.addEventListener("submit", evt => {
-            evt.preventDefault();
-            
-            const id = form.id[form.id.length - 1];
-            // const id = document.querySelector(`#id-field-${id}`).value;
-
-            document.querySelector(`#form-${id}`).setAttribute("style", "display:none;");
-            
-            
-            const name = document.querySelector(`#name-${id}-field`).value;
-            // document.getElementById(`#form-${id}`).reset();
-            
-            fetch('/api/edit_category', {
-                method: 'POST',
-                body: JSON.stringify({id, name}),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(responseJson => {
-                const name = responseJson.name;
-                
-                document.querySelector(`#link-${id}`).innerHTML = `${name}`;
-            })
-        })
-    }
+function edit(saveButton, category_id) {
+    const name = saveButton.parentElement.parentElement.querySelector('input').value;
+    fetch('/api/edit_category', {
+        method: 'POST',
+        body: JSON.stringify({category_id, name}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        const name = responseJson.name;
+        
+        document.querySelector(`#link-${category_id}`).innerHTML = `${name}`;
+    })
 }
-
-createEventListenersToEditCategory();

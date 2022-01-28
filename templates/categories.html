@@ -43,17 +43,33 @@
     {% for category in categories %}
         <li>
             <a id="link-{{category.id}}" href="/categories/{{category.id}}">{{ category.name }}</a>
-            <!-- <input id="id-field-{{category.id}}" class="form-control" value="{{category.id}}" type="hidden" name="id"> -->
-
-            <button id="open-edit-form-{{category.id}}" class="edit-button">Edit</button>
-
-            <form id="form-{{category.id}}" class="edit-category" style="display:none;" method="POST" action="/category">
-                <label for="name-field">Name</label>
-                <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" placeholder="{{ category.name }}" value="{{ category.name }}">
-                <input type="submit" value="Save" class="btn btn-primary">
-                <button type="button" onclick="close_form(this)">Cancel</button>
-            </form>
-
+            
+             <!-- Button trigger modal -->
+             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}">
+                Edit
+            </button>
+            
+            <!-- Edit Item Modal -->
+            <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form-{{category.id}}" class="edit-category" method="POST" action="/category">
+                            <label for="name-field">Name</label>
+                            <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" value="{{ category.name }}">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="edit(this, '{{ category.id }}')" data-bs-dismiss="modal">Save</button>
+                    </div>
+                </div>
+                </div>
+            </div>
         </li>
     {% endfor %}
     </ul>

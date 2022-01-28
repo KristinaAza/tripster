@@ -1,8 +1,37 @@
 {% extends 'base.html' %}
 {% block title %}{{ trip.name }} Trip{% endblock %}
 {% block body %}
-    <h2>{{ trip.name }} Trip {{ trip.trip_date }}</h2>
-    
+    <h2>
+        {{ trip.name }} Trip {{ trip.trip_date }}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Edit
+        </button>
+    </h2>
+    <!-- Edit Trip Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Edit Trip</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" class="edit-trip" method="POST" action="/trip">
+                    <label for="name-field">Name</label>
+                    <input id="name-field" class="form-control" type="text" name="name" value="{{ trip.name }}">
+                    <label for="date-field">Date</label>
+                    <input id="date-field" class="form-control" type="text" name="date" value="{{ trip.trip_date }}">
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="edit(this, '{{ trip.id }}')" data-bs-dismiss="modal">Save</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </br>
     <input type="checkbox" id="1" onclick="toggle(this)">Hide checked out items
     
     <ul>
@@ -10,29 +39,12 @@
             <li>
                 {{ category.name }}
                 {% if category.items %}
-                    <!-- <button onclick="openAddForm(this)">Add Item</button>
-
-                    <form class="add-item" style="display:none;" method="POST" action="/{{trip.id}}/trip_item">
-                    
-                        <label>Item</label>
-                        <select name="item">
-                            {% for item in category.items %}
-                            <option value="{{ item.id }}">{{ item.name }}</option>
-                            {% endfor %}    
-                        </select>
-                
-                        <label for="name-field">Quantity</label>
-                        <input id="name-field" class="form-control" type="text" name="quantity">
-                        <input type="submit" value="Add" class="btn btn-primary">
-                        <button type="button" onclick="close_form(this)">Cancel</button>
-                    </form> -->
-
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}">
                         Add Item
                     </button>
 
-                    <!-- Add Trip Modal -->
+                    <!-- Add TripItem Modal -->
                     <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
@@ -49,7 +61,7 @@
                                         <option value="{{ item.id }}">{{ item.name }}</option>
                                         {% endfor %}    
                                     </select>
-                            
+                                    </br>
                                     <label for="name-field">Quantity</label>
                                     <input id="name-field" class="form-control" type="text" name="quantity">
                                 </form>                            
