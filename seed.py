@@ -11,12 +11,12 @@ db.create_all()
 
 
 user = User(id=1, email="test@test.test", password_hash="Abc")
-category1 = Category(name="Food", user_id=1)
-category2 = Category(name="Clothes", user_id=1)
-item1 = Item(name="Banana", category_id=1, user_id=1)
-item2 = Item(name="Bread", category_id=1, user_id=1)
-item3 = Item(name="T-shirt", category_id=2, user_id=1)
-item4 = Item(name="Shoes", category_id=2, user_id=1)
+category1 = Category(name="Food", user_id=1, deleted=False)
+category2 = Category(name="Clothes", user_id=1, deleted=False)
+item1 = Item(name="Banana", category_id=1, user_id=1, deleted=False)
+item2 = Item(name="Bread", category_id=1, user_id=1, deleted=False)
+item3 = Item(name="T-shirt", category_id=2, user_id=1, deleted=False)
+item4 = Item(name="Shoes", category_id=2, user_id=1, deleted=False)
 
 trip1 = Trip(name="Yosemite", trip_date=datetime.date(2010, 5, 1), user_id=1)
 trip2 = Trip(name="San Diego", trip_date=datetime.date(2020, 10, 2), user_id=1)

@@ -1,14 +1,3 @@
-// Adding item
-
-// document.querySelector("#open-add-form").addEventListener("click", () => {   
-//     document.querySelector("#add-item").setAttribute("style", "visibility:visible;");
-// })
-
-
-// function render_item_id(element, id) {
-//     element.parentElement.insertAdjacentHTML('beforeend', `<div>${id}</div>`);
-// }
-
 function submitForm(element) {
     const saveButton = element;
     const modalFooterDiv = element.parentElement;
@@ -16,4 +5,21 @@ function submitForm(element) {
     const form = element.parentElement.parentElement.querySelector('.modal-body form');
 
     form.submit();
+}
+
+function deleteItem(element, item_id) {
+    fetch('/api/items/delete', {
+        method: 'POST',
+        body: JSON.stringify({item_id}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        const itemId = responseJson.itemId;
+        
+        const itemListElement = element.parentElement;
+        itemListElement.remove();
+    })
 }

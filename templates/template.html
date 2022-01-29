@@ -61,6 +61,7 @@
     </br>
     <ul>
         {% for category in categories %}
+        {% if not category.deleted or category.items %}                
             <li>
                 {{ category.name }}
                 {% if category.items%}
@@ -82,7 +83,9 @@
                                     <label>Item</label>
                                     <select name="item_id">
                                         {% for item in category.items %}
+                                        {% if not item.deleted %}
                                         <option value="{{ item.id }}">{{ item.name }}</option>
+                                        {% endif %}
                                         {% endfor %}    
                                     </select>
                                 </form>
@@ -106,7 +109,8 @@
                     {% endfor %}
                 </ul>
             </li>
-        {% endfor %}
+            {% endif %}
+            {% endfor %}
     </ul>
     
     <script src="/static/js/template.js"></script>

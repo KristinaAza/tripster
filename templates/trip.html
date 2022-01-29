@@ -36,7 +36,8 @@
     
     <ul>
         {% for category in categories %}
-            <li>
+        {% if not category.deleted or category.items %}                
+        <li>
                 {{ category.name }}
                 {% if category.items %}
                     <!-- Button trigger modal -->
@@ -58,7 +59,9 @@
                                     <label>Item</label>
                                     <select name="item">
                                         {% for item in category.items %}
+                                        {% if not item.deleted %}
                                         <option value="{{ item.id }}">{{ item.name }}</option>
+                                        {% endif %}
                                         {% endfor %}    
                                     </select>
                                     </br>
@@ -94,6 +97,7 @@
                     {% endfor %}
                 </ul>
             </li>
+            {% endif %}
         {% endfor %}
     </ul>
     <script src="/static/js/trip.js"></script>

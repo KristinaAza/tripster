@@ -78,6 +78,12 @@ def render_categories():
 
     return render_template("categories.html", categories=categories)
 
+@app.route("/categories/<category_id>/delete", methods=['POST'])
+def delete_category(category_id):
+
+    crud.delete_category(category_id, user_id=1)
+
+    return redirect("/categories")
 
 @app.route("/category", methods=['POST'])
 def add_category_with_rerender():
@@ -148,8 +154,18 @@ def edit_item_with_rerender(item_id):
     new_category_id = request.form.get("category")
     new_name = request.form.get("name")
     crud.update_item(item_id, new_category_id, new_name, user_id=1)
-    
+
     return redirect("/items")
+
+
+@app.route("/api/items/delete", methods=['POST'])
+def delete_item():
+
+    item_id = request.get_json().get("item_id")
+    crud.delete_item(item_id, user_id=1)
+
+    return jsonify({"item_id": item_id})
+
 
 @app.route("/<trip_id>/trip_item", methods=['POST'])
 def add_trip_item_with_rerender(trip_id):

@@ -7,27 +7,43 @@ def add_to_db(item):
 
 # categories
 
-# def get_category_by_id(id):
-
-#     category = Category.query.get(id)
-#     return category
-
 def create_category(name, user_id):
 
-    category = Category(name=name, user_id=user_id)
+    category = Category(name=name, user_id=user_id, deleted=False)
     add_to_db(category)
     return category
 
 
 def update_category(id, name, user_id):
 
-    db.session.query(Category).filter(user_id == user_id).filter(Category.id == id).update({"name": name})
+    (
+        db.session.query(Category)
+        .filter(Category.user_id == user_id)
+        .filter(Category.deleted is False)
+        .filter(Category.id == id)
+        .update({"name": name})
+    )
+    db.session.commit()
+
+def delete_category(id, user_id):
+
+    (
+        db.session.query(Category)
+        .filter(Category.user_id == user_id)
+        .filter(Category.id == id)
+        .update({"deleted": True})
+    )
     db.session.commit()
 
 
 def get_all_categories(user_id):
 
-    categories = Category.query.filter_by(user_id=user_id).order_by(Category.name).all()
+    categories = (
+        Category.query
+        .filter_by(user_id=user_id)
+        .filter_by(deleted=False)
+        .order_by(Category.name).all()
+    )
     return categories
 
 
@@ -35,15 +51,32 @@ def get_all_categories(user_id):
 
 def create_item(name, category_id, user_id):
 
-    item = Item(name=name, category_id=category_id, user_id=user_id)
+    item = Item(name=name, category_id=category_id, user_id=user_id, deleted=False)
     add_to_db(item)
     return item
 
 
 def update_item(item_id, category_id, name, user_id):
 
-    db.session.query(Item).filter(user_id == user_id).filter(Item.id == item_id).update({"category_id": category_id, "name": name})
+    (
+        db.session.query(Item)
+        .filter(user_id == user_id)
+        .filter(Item.id == item_id)
+        .update({"category_id": category_id, "name": name})
+    )
     db.session.commit()
+
+
+def delete_item(id, user_id):
+
+    (
+        db.session.query(Item)
+        .filter(Item.user_id == user_id)
+        .filter(Item.id == id)
+        .update({"deleted": True})
+    )
+    db.session.commit()
+
 
 # def get_all_items(user_id):
 
@@ -79,7 +112,12 @@ def create_trip(name, trip_date, user_id):
 
 def update_trip(id, name, trip_date, user_id):
 
-    db.session.query(Trip).filter(user_id == user_id).filter(Trip.id == id).update({"name": name, "trip_date": trip_date})
+    (
+        db.session.query(Trip)
+        .filter(Trip.user_id == user_id)
+        .filter(Trip.id == id)
+        .update({"name": name, "trip_date": trip_date})
+    )
     db.session.commit()
 
 
@@ -155,8 +193,13 @@ def create_template(name, user_id):
 
 
 def update_template(id, name, user_id):
-    
-    db.session.query(Template).filter(user_id == user_id).filter(Template.id == id).update({"name": name})
+
+    (
+        db.session.query(Template)
+        .filter(user_id == user_id)
+        .filter(Template.id == id)
+        .update({"name": name})
+    )
     db.session.commit()
 
 

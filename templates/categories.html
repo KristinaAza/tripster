@@ -1,15 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-    <!-- <button id="open-add-form">Add New Category</button>
-
-    <form id="add-category" style="display:none;" method="POST" action="/category">
-        <label for="name-field">Name</label>
-        <input id="name-field" class="form-control" type="text" name="name">
-        <input type="submit" value="Add" class="btn btn-primary">
-        <button type="button" onclick="close_form(this)">Cancel</button>
-    </form> -->
-
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Add New Category
@@ -58,7 +49,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="form-{{category.id}}" class="edit-category" method="POST" action="/category">
+                        <form id="form-{{category.id}}" class="edit-category" method="POST" action="/categories/{{category.id}}/delete">
                             <label for="name-field">Name</label>
                             <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" value="{{ category.name }}">
                         </form>
@@ -66,6 +57,7 @@
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="edit(this, '{{ category.id }}')" data-bs-dismiss="modal">Save</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm(this)"data-bs-dismiss="modal">Delete</button>
                     </div>
                 </div>
                 </div>

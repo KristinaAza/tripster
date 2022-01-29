@@ -28,7 +28,10 @@ class Category(db.Model):
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
+    deleted = db.Column(db.Boolean, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+
     # items = list of Item objects
 
     user = db.relationship("User", backref="categories")
@@ -45,6 +48,7 @@ class Item(db.Model):
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
+    deleted = db.Column(db.Boolean, nullable = False)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     # templates = list of Template objects

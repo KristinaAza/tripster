@@ -1,22 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Items{% endblock %}
 {% block body %}
-    <!-- <button id="open-add-form">Add New Item</button>
-
-    <form id="add-item" style="display:none;" method="POST" action="/item">
-        <label>Category</label>
-        <select name="category">
-            {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}    
-        </select>
-        </br>
-        <label for="name-field">Name</label>
-        <input id="name-field" class="form-control" type="text" name="name">
-        <input type="submit" value="Add" class="btn btn-primary">
-        <button type="button" onclick="close_form(this)">Cancel</button>
-    </form>   -->
-    
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Add New Item
@@ -35,7 +19,9 @@
                     <label>Category</label>
                     <select name="category">
                         {% for category in categories %}
+                        {% if not category.deleted %}
                         <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endif %}
                         {% endfor %}    
                     </select>
                     </br>
@@ -55,10 +41,12 @@
     <h2>Items</h2>
     <ul>
         {% for category in categories %}
+        {% if (not category.deleted) or (category.items) %}
         <li>
             {{ category.name }}
             <ul>
                 {% for item in category.items|sort(attribute='name') %}
+                    {% if not item.deleted %}
                     <li>
                         {{ item.name }}
                         <!-- Button trigger modal -->
@@ -80,7 +68,7 @@
                                         <select name="category">
                                             <option value="{{ category.id }}">{{ category.name }}</option>
                                             {% for cat in categories %}
-                                            {% if cat != category %}
+                                            {% if cat != category and not cat.deleted %} %}
                                             <option value="{{ cat.id }}">{{ cat.name }}</option>
                                             {% endif %}
                                             {% endfor %}    
@@ -99,10 +87,13 @@
                             </div>
                             </div>
                         </div>
+                        <button type="button" onclick="deleteItem(this, '{{ item.id }}')">Delete</button>
                     </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
 
