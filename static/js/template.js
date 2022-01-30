@@ -17,3 +17,21 @@ function edit(saveButton, template_id) {
         document.querySelector('nav .active').innerText = `${name} Template`;
     })
 }
+
+function deleteTemplateItem(element, template_id, item_id) {
+    fetch('/api/template_items/delete', {
+        method: 'POST',
+        body: JSON.stringify({template_id, item_id}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        
+        console.log(responseJson.status);
+
+        const templateItemElement = element.parentElement;
+        templateItemElement.remove();
+    })
+}

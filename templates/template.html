@@ -2,11 +2,9 @@
 {% block title %}{{ template.name }} Template{% endblock %}
 {% block body %}
      <!-- Button trigger modal -->
-     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-create">
-        Create Trip
-    </button>
+     <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-create" data-toggle="tooltip" data-placement="top" title="Create Trip"><i class="bi bi-magic"></i></button>
 
-    <!-- Add Trip Modal -->
+    <!-- Create Trip Modal -->
     <div class="modal fade" id="exampleModal-create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
@@ -31,12 +29,11 @@
         </div>
     </div>    
 
-    <h2>{{ template.name }} Template</h2>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Edit
-    </button>
-    
+    <h2>
+        {{ template.name }} Template
+        <!-- Button trigger modal -->
+        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
+    </h2>
     <!-- Edit Template Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -53,8 +50,8 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="edit(this, '{{ template.id }}')" data-bs-dismiss="modal">Save</button>
-            </div>
+            <button type="button" class="btn btn-primary" onclick="edit(this, '{{ template.id }}')" data-bs-dismiss="modal">Save</button>            
+        </div>
         </div>
         </div>
     </div>
@@ -66,11 +63,9 @@
                 {{ category.name }}
                 {% if category.items%}
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}">
-                        Add Item
-                    </button>
+                    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top" title="Add Item"><i class="bi bi-plus-square"></i></button>
 
-                    <!-- Add Trip Modal -->
+                    <!-- Add TemplateItem Modal -->
                     <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
@@ -104,6 +99,7 @@
                         {% if item in template.items %}
                         <li>
                             {{ item.name }}
+                            <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTemplateItem(this, '{{ template.id }}', '{{ item.id }}')"><i class="bi bi-trash"></i></button>
                         </li>
                         {% endif %}
                     {% endfor %}

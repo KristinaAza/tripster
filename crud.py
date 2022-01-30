@@ -19,7 +19,6 @@ def update_category(id, name, user_id):
     (
         db.session.query(Category)
         .filter(Category.user_id == user_id)
-        .filter(Category.deleted is False)
         .filter(Category.id == id)
         .update({"name": name})
     )
@@ -105,7 +104,7 @@ def get_items_ordered_alphabetically(user_id):
 
 def create_trip(name, trip_date, user_id):
 
-    trip = Trip(name=name, trip_date=trip_date, user_id=user_id)
+    trip = Trip(name=name, trip_date=trip_date, user_id=user_id, deleted=False)
     add_to_db(trip)
     return trip
 
@@ -133,6 +132,17 @@ def get_trip_by_id(id):
     return trip
 
 
+def delete_trip(id, user_id):
+
+    (
+        db.session.query(Trip)
+        .filter(Trip.user_id == user_id)
+        .filter(Trip.id == id)
+        .update({"deleted": True})
+    )
+    db.session.commit()
+
+
 # trip_items
 
 def create_trip_item(item_id, trip_id, quantity=1, checked=False):
@@ -140,6 +150,16 @@ def create_trip_item(item_id, trip_id, quantity=1, checked=False):
     trip_item = TripItem(item_id=item_id, trip_id=trip_id, quantity=quantity, checked=checked)
     add_to_db(trip_item)
     return trip_item
+
+
+def update_trip_item_quantity(id, quantity):
+
+    (
+        db.session.query(TripItem)
+        .filter(TripItem.id == id)
+        .update({"quantity": quantity})
+    )
+    db.session.commit()
 
 
 def get_all_trip_items(trip_id):
@@ -183,11 +203,18 @@ def toggle_checked(trip_item_id):
     add_to_db(trip_item)
     return trip_item.checked
 
+
+def delete_trip_item(trip_item_id):
+
+    TripItem.query.filter_by(id=trip_item_id).delete()
+    db.session.commit()
+
+
 # templates
 
 def create_template(name, user_id):
 
-    template = Template(name=name, user_id=user_id)
+    template = Template(name=name, user_id=user_id, deleted=False)
     add_to_db(template)
     return template
 
@@ -199,6 +226,17 @@ def update_template(id, name, user_id):
         .filter(user_id == user_id)
         .filter(Template.id == id)
         .update({"name": name})
+    )
+    db.session.commit()
+
+
+def delete_template(id, user_id):
+
+    (
+        db.session.query(Template)
+        .filter(Template.user_id == user_id)
+        .filter(Template.id == id)
+        .update({"deleted": True})
     )
     db.session.commit()
 
@@ -235,3 +273,13 @@ def get_all_template_items_with_categories(template_id):
         .all()
     )
     return categories
+
+
+def delete_template_item(template_id, item_id):
+
+    (
+        TemplateItem.query
+        .filter((TemplateItem.template_id == template_id) & (TemplateItem.item_id == item_id))
+        .delete()
+    )
+    db.session.commit()

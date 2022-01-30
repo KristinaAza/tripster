@@ -2,10 +2,8 @@
 {% block title %}Items{% endblock %}
 {% block body %}
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Add New Item
-    </button>
-
+    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Item"><i class="bi bi-plus-square"></i></button>
+   
     <!-- Add Item Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -50,13 +48,12 @@
                     <li>
                         {{ item.name }}
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ item.id }}">
-                            Edit
-                        </button>
-                        
+                        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
+                                                
                         <!-- Edit Item Modal -->
                         <div class="modal fade" id="exampleModal-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
+                           <!-- ToDo <form> -->
                             <div class="modal-content">
                                 <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
@@ -85,9 +82,10 @@
                                 <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
                                 </div>
                             </div>
-                            </div>
+                           <!-- ToDo <form> -->
                         </div>
-                        <button type="button" onclick="deleteItem(this, '{{ item.id }}')">Delete</button>
+                        </div>
+                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteItem(this, '{{ item.id }}')"><i class="bi bi-trash"></i></button>
                     </li>
                     {% endif %}
                 {% endfor %}

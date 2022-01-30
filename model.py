@@ -69,6 +69,7 @@ class Trip(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
     trip_date = db.Column(db.Date, nullable = False)
+    deleted = db.Column(db.Boolean, nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     # trip_items= list of TripItem object
 
@@ -108,6 +109,7 @@ class Template(db.Model):
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     name = db.Column(db.String(50), nullable = False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    deleted = db.Column(db.Boolean, nullable = False)
 
     user = db.relationship("User", backref="templates")
     items = db.relationship("Item", secondary="template_items", backref="templates")

@@ -1,9 +1,14 @@
-// Adding template
-
-// document.querySelector("#open-add-form").addEventListener("click", () => {   
-//     document.querySelector("#add-template").setAttribute("style", "visibility:visible;");
-// })
-
-function openAddForm(element) {
-    element.parentElement.querySelector('.create-trip').setAttribute("style", "visibility:visible;");
+function deleteTemplate(element, template_id) {
+    fetch('/api/templates/delete', {
+        method: 'POST',
+        body: JSON.stringify({template_id}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        const templateElement = element.parentElement;
+        templateElement.remove();
+    })
 }

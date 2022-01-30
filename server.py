@@ -56,6 +56,15 @@ def add_trip_with_rerender():
     return redirect("/trips")
 
 
+@app.route("/api/trips/delete", methods=['POST'])
+def delete_trip():
+
+    trip_id = request.get_json().get("trip_id")
+    crud.delete_trip(trip_id, user_id=1)
+
+    return jsonify({"status": "trip deleted"})
+
+
 @app.route("/<template_id>/trip", methods=['POST'])
 def create_trip_with_rerender(template_id):
 
@@ -79,7 +88,7 @@ def render_categories():
     return render_template("categories.html", categories=categories)
 
 @app.route("/categories/<category_id>/delete", methods=['POST'])
-def delete_category(category_id):
+def delete_category_with_rerender(category_id):
 
     crud.delete_category(category_id, user_id=1)
 
@@ -106,6 +115,15 @@ def add_category():
     }
 
     return jsonify({"categoryAdded": new_category})
+
+
+@app.route("/api/categories/delete", methods=['POST'])
+def delete_category():
+
+    category_id = request.get_json().get("category_id")
+    crud.delete_category(category_id, user_id=1)
+
+    return jsonify({"status": "category deleted"})
 
 
 @app.route("/api/trip_item", methods=['POST'])
@@ -179,6 +197,24 @@ def add_trip_item_with_rerender(trip_id):
     return redirect(f"/trips/{trip_id}")
 
 
+@app.route("/trip_items/<trip_item_id>/edit", methods=['POST'])
+def edit_trip_item_quantity_with_rerender(trip_item_id):
+
+    quantity = request.form.get("quantity")
+    crud.update_trip_item_quantity(trip_item_id, quantity)
+    trip_item = crud.get_trip_item_by_id(trip_item_id)
+    
+    return redirect(f"/trips/{trip_item.trip_id}")
+
+
+@app.route("/api/trip_items/delete", methods=['POST'])
+def delete_trip_item():
+
+    trip_item_id = request.get_json().get("trip_item_id")
+    crud.delete_trip_item(trip_item_id)
+
+    return jsonify({"status": "trip item deleted"})
+
 
 @app.route("/templates")
 def render_templates():
@@ -186,6 +222,16 @@ def render_templates():
     templates = crud.get_all_templates(user_id=1)
 
     return render_template("templates.html", templates=templates)
+
+
+@app.route("/api/templates/delete", methods=['POST'])
+def delete_template():
+
+    template_id = request.get_json().get("template_id")
+    crud.delete_template(template_id, user_id=1)
+
+    return jsonify({"status": "template deleted"})
+
 
 
 @app.route("/template", methods=['POST'])
@@ -231,6 +277,14 @@ def add_template_item_with_rerender(template_id):
     return redirect(f"/templates/{template_id}")
 
 
+@app.route("/api/template_items/delete", methods=['POST'])
+def delete_template_item():
+
+    template_id = request.get_json().get("template_id")
+    item_id = request.get_json().get("item_id")
+    crud.delete_template_item(template_id, item_id)
+
+    return jsonify({"status": "template item deleted"})
 
 
 if __name__ == "__main__":

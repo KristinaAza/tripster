@@ -17,8 +17,6 @@ function deleteItem(element, item_id) {
     })
     .then(response => response.json())
     .then(responseJson => {
-        const itemId = responseJson.itemId;
-        
         const itemListElement = element.parentElement;
         itemListElement.remove();
     })
