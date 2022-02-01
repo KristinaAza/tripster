@@ -69,11 +69,20 @@ def delete_trip():
 @app.route("/api/trips/send_email", methods=['POST'])
 def send_email():
 
+    # json = request.get_json()
+    
     email = request.get_json().get("email")
     trip_id = request.get_json().get("trip_id")
     trip = crud.get_trip_by_id(trip_id)
+    
+    subject = f"{trip.name} {trip.trip_date}"
+    html_content = f"<h2>{trip.name} {trip.trip_date}</h2><ol>"
+    
+    for trip_item in trip.trip_items:
+        html_content += f"<li>{trip_item.item.name} {trip_item.quantity}</li>"
+    html_content +="</ol>"
 
-    sendgrid_api.send_email(email, "subject: test", f"<h2>{trip.name} {trip.trip_date}</h2>")
+    sendgrid_api.send_email(email, subject, html_content)
 
     return jsonify({"status": "email sent"})
 
