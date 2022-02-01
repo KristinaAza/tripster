@@ -1,6 +1,7 @@
 from datetime import date
 from flask import Flask, render_template, redirect, request, jsonify
 from model import connect_to_db
+import sendgrid_api
 import crud
 
 app = Flask(__name__)
@@ -64,6 +65,17 @@ def delete_trip():
 
     return jsonify({"status": "trip deleted"})
 
+
+@app.route("/api/trips/send_email", methods=['POST'])
+def send_email():
+
+    email = request.get_json().get("email")
+    trip_id = request.get_json().get("trip_id")
+    trip = crud.get_trip_by_id(trip_id)
+
+    sendgrid_api.send_email(email, "subject: test", f"<h2>{trip.name} {trip.trip_date}</h2>")
+
+    return jsonify({"status": "email sent"})
 
 @app.route("/<template_id>/trip", methods=['POST'])
 def create_trip_with_rerender(template_id):
@@ -203,7 +215,7 @@ def edit_trip_item_quantity_with_rerender(trip_item_id):
     quantity = request.form.get("quantity")
     crud.update_trip_item_quantity(trip_item_id, quantity)
     trip_item = crud.get_trip_item_by_id(trip_item_id)
-    
+
     return redirect(f"/trips/{trip_item.trip_id}")
 
 

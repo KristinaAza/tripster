@@ -85,3 +85,21 @@ function deleteTripItem(element, trip_item_id) {
         tripItemElement.remove();
     })
 }
+
+function send_email(send_email_button, trip_id) {
+
+    const email = document.querySelector("#email-field").value;
+
+    fetch('/api/trips/send_email', {
+        method: 'POST',
+        body: JSON.stringify({trip_id, email}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        
+        console.log(responseJson.status);
+    })   
+}
