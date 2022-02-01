@@ -86,13 +86,31 @@ function deleteTripItem(element, trip_item_id) {
     })
 }
 
-function send_email(send_email_button, trip_id) {
+function send_email(trip_id) {
 
     const email = document.querySelector("#email-field").value;
 
     fetch('/api/trips/send_email', {
         method: 'POST',
         body: JSON.stringify({trip_id, email}),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(response => response.json())
+    .then(responseJson => {
+        
+        console.log(responseJson.status);
+    })   
+}
+
+function send_sms(trip_id) {
+
+    const phone_number = document.querySelector("#phone-number-field").value;
+
+    fetch('/api/trips/send_sms', {
+        method: 'POST',
+        body: JSON.stringify({trip_id, phone_number}),
         headers: {
             'Content-Type': 'application/json',
         },

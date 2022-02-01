@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}{{ trip.name }} Trip{% endblock %}
 {% block body %}
+    <!-- Button trigger Send Email modal -->
     <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#emailModal" data-toggle="tooltip" data-placement="top" title="Send Trip As Email"><i class="bi bi-envelope"></i></button>
     
     <!-- Send Email Modal -->
@@ -19,7 +20,33 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="send_email(this, '{{ trip.id }}')" data-bs-dismiss="modal">Send</button>
+            <button type="button" class="btn btn-primary" onclick="send_email('{{ trip.id }}')" data-bs-dismiss="modal">Send</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Button trigger Send SMS modal -->
+    <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#smsModal" data-toggle="tooltip" data-placement="top" title="Send Trip As SMS"><i class="bi bi-chat-left-text"></i>
+    </i></button>
+        
+    <!-- Send SMS Modal -->
+    <div class="modal fade" id="smsModal" tabindex="-1" aria-labelledby="smsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Send SMS</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" class="edit-trip" method="POST" action="/send_sms">
+                    <label for="phone-number-field">Phone Number</label>
+                    <input id="phone-number-field" class="form-control" type="text" name="phone_number" placeholder="+19999999999">
+                </form>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" onclick="send_sms('{{ trip.id }}')" data-bs-dismiss="modal">Send</button>
             </div>
         </div>
         </div>

@@ -28,5 +28,3 @@ def send_sms(to_phone_number, body):
                     )
     print("sms sent")
     print(message.sid)
-
-#send_sms(os.environ['TO_PHONE_NUMBER'], "test")

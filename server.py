@@ -1,7 +1,7 @@
 from datetime import date
 from flask import Flask, render_template, redirect, request, jsonify
 from model import connect_to_db
-import sendgrid_api
+import send_api
 import crud
 
 app = Flask(__name__)
@@ -49,8 +49,9 @@ def edit_trip():
 @app.route("/trip", methods=['POST'])
 def add_trip_with_rerender():
 
-    name = request.form.get("name")
-    str_date = request.form.get("date")
+    form = request.form
+    name = form.get("name")
+    str_date = form.get("date")
     trip_date = date.fromisoformat(str_date)
 
     crud.create_trip(name, trip_date, user_id=1)
@@ -69,22 +70,42 @@ def delete_trip():
 @app.route("/api/trips/send_email", methods=['POST'])
 def send_email():
 
-    # json = request.get_json()
-    
-    email = request.get_json().get("email")
-    trip_id = request.get_json().get("trip_id")
+    json = request.get_json()
+
+    email = json.get("email")
+    trip_id = json.get("trip_id")
     trip = crud.get_trip_by_id(trip_id)
-    
+
     subject = f"{trip.name} {trip.trip_date}"
     html_content = f"<h2>{trip.name} {trip.trip_date}</h2><ol>"
-    
+
     for trip_item in trip.trip_items:
         html_content += f"<li>{trip_item.item.name} {trip_item.quantity}</li>"
     html_content +="</ol>"
 
-    sendgrid_api.send_email(email, subject, html_content)
+    send_api.send_email(email, subject, html_content)
 
     return jsonify({"status": "email sent"})
+
+
+@app.route("/api/trips/send_sms", methods=['POST'])
+def send_sms():
+
+    json = request.get_json()
+
+    phone_number = json.get("phone_number")
+    trip_id = json.get("trip_id")
+    trip = crud.get_trip_by_id(trip_id)
+
+    sms_body = f"{trip.name} {trip.trip_date}\n"
+
+    for i, trip_item in enumerate(trip.trip_items):
+        sms_body += f"{i + 1}. {trip_item.item.name} {trip_item.quantity}\n"
+
+    send_api.send_sms(phone_number, sms_body)
+
+    return jsonify({"status": "sms sent"})
+
 
 @app.route("/<template_id>/trip", methods=['POST'])
 def create_trip_with_rerender(template_id):
