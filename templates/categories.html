@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-    <!-- Button trigger modal -->
-    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Category"><i class="bi bi-plus-square"></i></button>
+<!-- Button trigger modal -->
+<button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    data-toggle="tooltip" data-placement="top" title="Add New Category"><i class="bi bi-plus-square"></i></button>
 
-    <!-- Add Category Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+<!-- Add Category Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="add-category" method="POST" action="/category">
@@ -19,51 +20,57 @@
                 </form>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
             </div>
         </div>
-        </div>
     </div>
+</div>
 
 
-    <h2>Categories</h2>
-    <ul id="categories">
+<h2>Categories</h2>
+<ul id="categories">
     {% for category in categories %}
     {% if not category.deleted %}
-        <li>
-            <span  id="category-{{ category.id }}">{{ category.name }}</span>
-            
-            <!-- Button trigger modal -->
-            <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-            
-            <!-- Edit Category Modal -->
-            <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+    <li>
+        <span id="category-{{ category.id }}">{{ category.name }}</span>
+
+        <!-- Button trigger modal -->
+        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                class="bi bi-pencil"></i></button>
+
+        <!-- Edit Category Modal -->
+        <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="form-{{category.id}}" class="edit-category" method="POST" action="/categories/{{category.id}}/edit">
+                        <form id="form-{{category.id}}" class="edit-category" method="POST"
+                            action="/categories/{{category.id}}/edit">
                             <label for="name-field">Name</label>
-                            <input id="name-{{category.id}}-field" class="form-control" type="text" name="name" value="{{ category.name }}">
+                            <input id="name-{{category.id}}-field" class="form-control" type="text" name="name"
+                                value="{{ category.name }}">
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="editCategory(this, '{{ category.id }}')" data-bs-dismiss="modal">Save</button>
+                        <button type="button" class="btn btn-primary" onclick="editCategory(this, '{{ category.id }}')"
+                            data-bs-dismiss="modal">Save</button>
                     </div>
                 </div>
-                </div>
             </div>
-            <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteCategory(this, '{{ category.id }}')"><i class="bi bi-trash"></i></button>
-        </li>
+        </div>
+        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top"
+            title="Delete" onclick="deleteCategory(this, '{{ category.id }}')"><i class="bi bi-trash"></i></button>
+    </li>
     {% endif %}
     {% endfor %}
-    </ul>
+</ul>
 
-    <script src="static/js/categories.js"></script>
+<script src="static/js/categories.js"></script>
 {% endblock %}
-</html>

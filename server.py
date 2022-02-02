@@ -1,10 +1,55 @@
 from datetime import date
-from flask import Flask, render_template, redirect, request, jsonify
+from flask import Flask, flash, render_template, redirect, request, jsonify, session
+from jinja2 import StrictUndefined
 from model import connect_to_db
 import send_api
 import crud
+import os
 
 app = Flask(__name__)
+app.secret_key=os.environ['SECRET_KEY']
+
+
+
+@app.before_request
+def redirect_to_login():
+
+    if "user_id" not in session and request.endpoint != "render_login" and request.endpoint != "login":
+        return redirect("/login")
+
+
+@app.route("/login")
+def render_login():
+
+    return render_template("login.html", isLogin=True)
+
+@app.route("/users/login", methods=["POST"])
+def login():
+
+    form = request.form
+    email = form.get("email")
+    password = form.get("password")
+
+    user = crud.get_user_by_email(email)
+    # ToDo: simplify 
+    if not user:
+        message = "User does not exist"
+        flash(message)
+        return redirect("/login")
+    else:
+        if password != user.password_hash:
+            message = "Wrong email or password. Try again"
+            flash(message)
+            return redirect("/login")
+
+        else:
+            message = "You are logged in"
+            session["user_id"] = user.id
+
+    flash(message)
+
+    return redirect("/trips")
+
 
 @app.route("/")
 def redirect_to_trips():
@@ -14,7 +59,7 @@ def redirect_to_trips():
 
 @app.route("/trips")
 def render_trips():
-
+  
     trips = crud.get_all_trips(user_id=1)
 
     return render_template("trips.html", trips=trips)

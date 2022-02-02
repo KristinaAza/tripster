@@ -20,47 +20,56 @@
     {% endblock %}
 </head>
 <body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">Tripster</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" href="/trips">Trips</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/categories">Categories</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/items">Items</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/templates">Templates</a>
-              </li>
-              {% if trip %}
-                <li><a class="nav-link" href="/trips/{{trip.id}}">{{ trip.name }} Trip</a></li>
-              {% endif %}
-              
-              {% if template %}
-              <li><a class="nav-link" href="/templates/{{template.id}}">{{ template.name }} Template</a></li>
-              {% endif %}
-           
-            </ul>
-          </div>
-        </div>
-    </nav>
 
-    {% block body %}{% endblock %}
-    <script src="/static/js/base.js"></script>   
-   
-    <script>
-        $('nav a').removeClass('active');
-        $('nav a').removeAttr("aria-current");
-        $('a[href="' + this.location.pathname + '"]').addClass('active');
-        $('a[href="' + this.location.pathname + '"]').attr("aria-current", "page");
-    </script>
+  {{ session["user_id"] }}
+
+
+  {% for message in get_flashed_messages()%}
+    <p>{{ message }}</p>
+  {% endfor %}
+
+  {% if not isLogin %}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Tripster</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/trips">Trips</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/categories">Categories</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/items">Items</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/templates">Templates</a>
+            </li>
+            {% if trip %}
+              <li><a class="nav-link" href="/trips/{{trip.id}}">{{ trip.name }} Trip</a></li>
+            {% endif %}
+            
+            {% if template %}
+            <li><a class="nav-link" href="/templates/{{template.id}}">{{ template.name }} Template</a></li>
+            {% endif %}
+          
+          </ul>
+        </div>
+      </div>
+    </nav>
+  {% endif %}
+  {% block body %}{% endblock %}
+  <script src="/static/js/base.js"></script>   
+  
+  <script>
+      $('nav a').removeClass('active');
+      $('nav a').removeAttr("aria-current");
+      $('a[href="' + this.location.pathname + '"]').addClass('active');
+      $('a[href="' + this.location.pathname + '"]').attr("aria-current", "page");
+  </script>
 </body>
 </html>

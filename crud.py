@@ -5,6 +5,14 @@ def add_to_db(item):
     db.session.commit()
 
 
+# users
+
+def get_user_by_email(email):
+
+    user = User.query.filter(User.email == email).first()
+    return user
+
+
 # categories
 
 def create_category(name, user_id):
