@@ -10,7 +10,7 @@ connect_to_db(app)
 db.create_all()
 
 
-user = User(id=1, email="test@test.test", password_hash="Abc")
+user = User(id=1, email="test@test.test", password_hash="de34ddf5af5bcbda0219a7280880a0b7c6ae7b12885160996fe3effaa67733a3")#password="koko"
 category1 = Category(name="Food", user_id=1, deleted=False)
 category2 = Category(name="Clothes", user_id=1, deleted=False)
 item1 = Item(name="Banana", category_id=1, user_id=1, deleted=False)

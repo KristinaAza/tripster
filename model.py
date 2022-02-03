@@ -10,7 +10,7 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     email = db.Column(db.String(50), nullable = False)
-    password_hash = db.Column(db.String(50), nullable = False)
+    password_hash = db.Column(db.String(64), nullable = False)
     # categories = list of Category objects
     # items = list of Item objects
     # trips = list of Trip objects

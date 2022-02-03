@@ -7,6 +7,7 @@
     <title>
         {% block title %}{% endblock %}
     </title>
+    <link rel="icon" href="/static/img/letter-t.png" type="image/icon type">
     {% block head %}
         <!-- Bootstrap JS Bundle-->
         <!-- JavaScript Bundle with Popper -->
@@ -31,9 +32,12 @@
   {% if not isLogin %}
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Tripster</a>
+        <a class="navbar-brand" href="#">
+          <img src="/static/img/letter-t.png" alt="" width="30" height="24">
+          Tripster
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -56,7 +60,7 @@
             {% if template %}
             <li><a class="nav-link" href="/templates/{{template.id}}">{{ template.name }} Template</a></li>
             {% endif %}
-          
+            <li><a href="/logout" class="btn btn-info">Log out</a></li>
           </ul>
         </div>
       </div>
@@ -72,4 +76,5 @@
       $('a[href="' + this.location.pathname + '"]').attr("aria-current", "page");
   </script>
 </body>
+<footer><a href="https://www.flaticon.com/free-icons/t" title="t icons">T icons created by Icon.doit - Flaticon</a></footer>
 </html>

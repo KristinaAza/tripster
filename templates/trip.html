@@ -133,7 +133,7 @@
                                 <div>                                 
                                     {% if trip_item.checked %}
                                     <input class="hide" style="display:inline;" type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span class="hide" style="text-decoration:line-through; display:inline;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                    <span class="hide" style="text-decoration:line-through; display:inline;">{{ item.name }} {% if trip_item.quantity != 1 %}{{ trip_item.quantity }}{% endif %}</span>
 
                                     <!-- Button trigger modal -->
                                     <button id="edit" class="hide btn btn-secondary btn-sm rounded-2" style="display:inline;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
@@ -164,7 +164,7 @@
                                     <button id="delete" class="hide btn btn-danger btn-sm rounded-2" style="display:inline;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTripItem(this, '{{ trip_item.id }}')"><i class="bi bi-trash"></i></button>
                                     {% else %}
                                     <input type="checkbox" style="display:inline;" onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span style="text-decoration:none; display:inline;">{{ item.name }} {{ trip_item.quantity }}</span>
+                                    <span style="text-decoration:none; display:inline;">{{ item.name }} {% if trip_item.quantity != 1 %}{{ trip_item.quantity }}{% endif %}</span>
 
                                     <!-- Button trigger modal -->
                                     <button id="edit" class="btn btn-secondary btn-sm rounded-2" style="display:inline;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
@@ -207,4 +207,3 @@
     </ul>
     <script src="/static/js/trip.js"></script>
 {% endblock %}
-</html>

@@ -1,10 +1,11 @@
 from datetime import date
+import hashlib
+import os
 from flask import Flask, flash, render_template, redirect, request, jsonify, session
 from jinja2 import StrictUndefined
 from model import connect_to_db
 import send_api
 import crud
-import os
 
 app = Flask(__name__)
 app.secret_key=os.environ['SECRET_KEY']
@@ -29,15 +30,16 @@ def login():
     form = request.form
     email = form.get("email")
     password = form.get("password")
+    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
 
     user = crud.get_user_by_email(email)
-    # ToDo: simplify 
+
     if not user:
         message = "User does not exist"
         flash(message)
         return redirect("/login")
     else:
-        if password != user.password_hash:
+        if password_hash != user.password_hash:
             message = "Wrong email or password. Try again"
             flash(message)
             return redirect("/login")
@@ -51,6 +53,14 @@ def login():
     return redirect("/trips")
 
 
+@app.route("/logout")
+def logout():
+
+    session.clear()
+    flash("You've successfully logged out")
+    return redirect("/login")
+
+
 @app.route("/")
 def redirect_to_trips():
 
@@ -59,7 +69,7 @@ def redirect_to_trips():
 
 @app.route("/trips")
 def render_trips():
-  
+    # session.clear()
     trips = crud.get_all_trips(user_id=1)
 
     return render_template("trips.html", trips=trips)
@@ -125,7 +135,11 @@ def send_email():
     html_content = f"<h2>{trip.name} {trip.trip_date}</h2><ol>"
 
     for trip_item in trip.trip_items:
-        html_content += f"<li>{trip_item.item.name} {trip_item.quantity}</li>"
+        if trip_item.quantity == 1:
+            html_content += f"<li>{trip_item.item.name}</li>"
+        else:
+            html_content += f"<li>{trip_item.item.name} {trip_item.quantity}</li>"
+
     html_content +="</ol>"
 
     send_api.send_email(email, subject, html_content)
@@ -145,7 +159,10 @@ def send_sms():
     sms_body = f"{trip.name} {trip.trip_date}\n"
 
     for i, trip_item in enumerate(trip.trip_items):
-        sms_body += f"{i + 1}. {trip_item.item.name} {trip_item.quantity}\n"
+        if trip_item.quantity == 1:
+            sms_body += f"{i + 1}. {trip_item.item.name}\n"
+        else:
+            sms_body += f"{i + 1}. {trip_item.item.name} {trip_item.quantity}\n"
 
     send_api.send_sms(phone_number, sms_body)
 
