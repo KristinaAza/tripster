@@ -1,3 +1,4 @@
+"use strict";
 
 function edit(saveButton, trip_id) {
     const name = saveButton.parentElement.parentElement.querySelector('#name-field').value;

@@ -1,3 +1,5 @@
+"use strict";
+
 function submitForm(element) {
     const saveButton = element;
     const modalFooterDiv = element.parentElement;

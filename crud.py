@@ -1,4 +1,4 @@
-from model import User, Category, Item, Trip, TripItem, Template, TemplateItem, connect_to_db, db
+from model import User, Category, Item, Trip, TripItem, Template, TemplateItem, db
 
 def add_to_db(item):
     db.session.add(item)
@@ -22,22 +22,22 @@ def create_category(name, user_id):
     return category
 
 
-def update_category(id, name, user_id):
+def update_category(category_id, name, user_id):
 
     (
         db.session.query(Category)
         .filter(Category.user_id == user_id)
-        .filter(Category.id == id)
+        .filter(Category.id == category_id)
         .update({"name": name})
     )
     db.session.commit()
 
-def delete_category(id, user_id):
+def delete_category(category_id, user_id):
 
     (
         db.session.query(Category)
         .filter(Category.user_id == user_id)
-        .filter(Category.id == id)
+        .filter(Category.id == category_id)
         .update({"deleted": True})
     )
     db.session.commit()
@@ -74,21 +74,15 @@ def update_item(item_id, category_id, name, user_id):
     db.session.commit()
 
 
-def delete_item(id, user_id):
+def delete_item(item_id, user_id):
 
     (
         db.session.query(Item)
         .filter(Item.user_id == user_id)
-        .filter(Item.id == id)
+        .filter(Item.id == item_id)
         .update({"deleted": True})
     )
     db.session.commit()
-
-
-# def get_all_items(user_id):
-
-#     items = Item.query.filter_by(user_id=user_id).all()
-#     return items
 
 
 def get_all_items_with_categories(user_id):
@@ -110,19 +104,19 @@ def get_items_ordered_alphabetically(user_id):
 
 # trips
 
-def create_trip(name, trip_date, user_id):
+def create_trip(user_id, name, trip_date):
 
     trip = Trip(name=name, trip_date=trip_date, user_id=user_id, deleted=False)
     add_to_db(trip)
     return trip
 
 
-def update_trip(id, name, trip_date, user_id):
+def update_trip(user_id, trip_id, name, trip_date):
 
     (
         db.session.query(Trip)
         .filter(Trip.user_id == user_id)
-        .filter(Trip.id == id)
+        .filter(Trip.id == trip_id)
         .update({"name": name, "trip_date": trip_date})
     )
     db.session.commit()
@@ -134,18 +128,18 @@ def get_all_trips(user_id):
     return trips
 
 
-def get_trip_by_id(id):
+def get_trip_by_id(user_id, trip_id):
 
-    trip = Trip.query.get(id)
+    trip = Trip.query.filter(Trip.user_id == user_id).filter(Trip.id == trip_id).first()
     return trip
 
 
-def delete_trip(id, user_id):
+def delete_trip(trip_id, user_id):
 
     (
         db.session.query(Trip)
         .filter(Trip.user_id == user_id)
-        .filter(Trip.id == id)
+        .filter(Trip.id == trip_id)
         .update({"deleted": True})
     )
     db.session.commit()
@@ -160,11 +154,11 @@ def create_trip_item(item_id, trip_id, quantity=1, checked=False):
     return trip_item
 
 
-def update_trip_item_quantity(id, quantity):
+def update_trip_item_quantity(trip_item_id, quantity):
 
     (
         db.session.query(TripItem)
-        .filter(TripItem.id == id)
+        .filter(TripItem.id == trip_item_id)
         .update({"quantity": quantity})
     )
     db.session.commit()
@@ -175,11 +169,12 @@ def get_all_trip_items(trip_id):
     trip_items = TripItem.query.filter_by(trip_id=trip_id).all()
     return trip_items
 
-def get_all_trip_items_with_categories(trip_id):
+def get_all_trip_items_with_categories(user_id, trip_id):
 
     categories = (
         Category.query.options(db.joinedload("items")
         .options(db.joinedload("trip_items")))
+        .filter(Category.user_id == user_id)
         .filter(TripItem.trip_id == trip_id)
         .order_by(Category.name)
         .all()
@@ -187,9 +182,9 @@ def get_all_trip_items_with_categories(trip_id):
     return categories
 
 
-def get_trip_item_by_id(id):
+def get_trip_item_by_id(trip_item_id):
 
-    trip_item = TripItem.query.get(id)
+    trip_item = TripItem.query.get(trip_item_id)
     return trip_item
 
 
@@ -227,23 +222,23 @@ def create_template(name, user_id):
     return template
 
 
-def update_template(id, name, user_id):
+def update_template(template_id, name, user_id):
 
     (
         db.session.query(Template)
         .filter(user_id == user_id)
-        .filter(Template.id == id)
+        .filter(Template.id == template_id)
         .update({"name": name})
     )
     db.session.commit()
 
 
-def delete_template(id, user_id):
+def delete_template(template_id, user_id):
 
     (
         db.session.query(Template)
         .filter(Template.user_id == user_id)
-        .filter(Template.id == id)
+        .filter(Template.id == template_id)
         .update({"deleted": True})
     )
     db.session.commit()
@@ -255,9 +250,14 @@ def get_all_templates(user_id):
     return templates
 
 
-def get_template_by_id(id):
+def get_template_by_id(user_id, template_id):
 
-    template = Template.query.get(id)
+    template = (
+        Template.query
+        .filter(Template.user_id == user_id)
+        .filter(Template.id == template_id)
+        .first()
+    )
     return template
 
 
@@ -271,11 +271,12 @@ def create_template_item(item_id, template_id):
     return template_item
 
 
-def get_all_template_items_with_categories(template_id):
+def get_all_template_items_with_categories(user_id, template_id):
 
     categories = (
         Category.query.options(db.joinedload("items")
         .options(db.joinedload("template_items")))
+        .filter(Category.user_id == user_id)
         .filter(TemplateItem.template_id == template_id)
         .order_by(Category.name)
         .all()

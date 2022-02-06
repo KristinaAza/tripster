@@ -29,6 +29,7 @@
     <h2>Templates</h2>
     <ul>
     {% for template in templates %}
+    {% if not template.deleted %}
         <li>
             {{ template.name }}
             <a href="/templates/{{template.id}}"><button class="btn btn-secondary btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button></a>
@@ -62,6 +63,7 @@
                 </div>
             </div>
         </li>  
+    {% endif %}
     {% endfor %}
     </ul>
 

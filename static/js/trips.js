@@ -1,3 +1,5 @@
+"use strict";
+
 function deleteTrip(element, trip_id) {
     fetch('/api/trips/delete', {
         method: 'POST',

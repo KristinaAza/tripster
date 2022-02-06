@@ -1,3 +1,5 @@
+"use strict";
+
 function edit(saveButton, template_id) {
     const name = saveButton.parentElement.parentElement.querySelector('#name-field').value;
     
@@ -12,7 +14,7 @@ function edit(saveButton, template_id) {
     .then(responseJson => {
         const name = responseJson.name;
       
-        document.querySelector('h2').innerHTML = `${name} Template`;
+        document.querySelector('h2 span').innerHTML = `${name} Template`;
         document.querySelector('title').innerText = `${name} Template`;
         document.querySelector('nav .active').innerText = `${name} Template`;
     })

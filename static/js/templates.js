@@ -1,3 +1,5 @@
+"use strict";
+
 function deleteTemplate(element, template_id) {
     fetch('/api/templates/delete', {
         method: 'POST',
