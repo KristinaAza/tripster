@@ -1,5 +1,7 @@
 """Tripster app models"""
 
+import datetime
+import hashlib
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -147,6 +149,18 @@ def connect_to_db(app, db_uri="postgresql:///tripster", echo=True):
     db.init_app(app)
 
     print("Connected to the db")
+
+
+def create_test_data():
+
+    Trip.query.filter_by(user_id=1).delete()
+    User.query.filter_by(id=1).delete()
+
+    test_user1 = User(id=1, email="test1@test.test", password_hash="1234")
+    test_trip1 = Trip(name="SF", trip_date=datetime.date(2011, 11, 11), user_id=1, deleted=False)
+
+    db.session.add_all([test_user1, test_trip1])
+    db.session.commit()
 
 
 if __name__ == "__main__":

@@ -9,7 +9,6 @@ import crud
 app = Flask(__name__)
 app.secret_key=os.environ['SECRET_KEY']
 
-
 @app.before_request
 def redirect_to_login():
 
@@ -21,6 +20,9 @@ def redirect_to_login():
 
 @app.route("/login")
 def render_login():
+
+    if "user_id" in session:
+        return redirect("/trips")
 
     return render_template("login.html")
 
@@ -35,23 +37,12 @@ def login():
 
     user = crud.get_user_by_email(email)
 
-    if not user:
-        message = "User does not exist"
-        flash(message)
-        return redirect("/login")
+    if user and password_hash == user.password_hash:
+        session["user_id"] = user.id
+        return redirect("/trips")
     else:
-        if password_hash != user.password_hash:
-            message = "Wrong email or password. Try again"
-            flash(message)
-            return redirect("/login")
-
-        else:
-            message = "You are logged in"
-            session["user_id"] = user.id
-
-    flash(message)
-
-    return redirect("/trips")
+        flash("Wrong email or password. Try again")
+        return redirect("/login")
 
 
 @app.route("/logout")
@@ -400,3 +391,4 @@ if __name__ == "__main__":
 
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
+    
