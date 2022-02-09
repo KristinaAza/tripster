@@ -1,0 +1,155 @@
+h2 {
+    color: #fff;
+}
+
+.modal-content {
+    background-color:rgb(155,50,26) !important;
+    box-shadow: 0 0px 20px 0 rgba(0,0,0,0.3);
+}
+
+/* .modal-content input, .modal-content input:focus {
+    background-color: rgb(254 230 178);
+}
+
+.modal-content input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: -internal-light-dark(rgb(254 230 178), rgba(70, 90, 126, 0.4)) !important;
+    color: -internal-light-dark(black, rgb(254 230 178)) !important; 
+}*/
+
+.card {
+    /* background-color: rgba(0,0,0,0.6); */
+    color:#fff;
+    background-color: rgba(0,0,0,0.8);
+    box-shadow: rgb(0 0 0 / 20%) 0px 2px 1px -1px, rgb(0 0 0 / 14%) 0px 1px 1px 0px, rgb(0 0 0 / 12%) 0px 1px 3px 0px;
+    margin: auto;
+}
+
+
+.list-group-item {
+    /* padding-left: 20px;
+    padding-right: 20px; */
+    /* box-shadow: 0 0px 20px 0 rgba(0,0,0,0.3); */
+    background-color: rgba(255, 255, 255, 0.932);
+    /* rgba(255,255,255,0.6); */
+    /* transition: 0.5s; */
+    color: #444;
+    /* color: #0093de */
+}
+
+.card button,
+.list-group-item button {
+    float: right;
+    margin: 5px;
+}
+
+/* .modal-header {
+    color: #212529;
+    border-bottom: 1px solid rgb(254, 230, 178);
+}
+*/
+.modal-footer button {
+    color: #212529;;
+    background-color: #5c636a;
+    border-color: #565e64;
+} 
+
+.modal-footer button:hover,
+.modal-footer button:focus {
+    color: #fff;
+    background-color: #5c636a;
+    border-color: #565e64;
+} 
+
+.btn-xs:hover {
+    /* background-color: #2086c1; */
+    color: #2db6e8;
+    border-color: transparent;
+  }
+/* .page {
+    background: linear-gradient(#edc7ca, #bbb6ce);
+    background-size: cover;
+} */
+
+.page {
+  background-color: #facfe4; /* fallback if background image fails */
+  background-repeat: no-repeat;
+  background-image: url('/static/img/NZ.jpg');
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+.page nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.nav-transparent {
+    /* background: linear-gradient(rgba(0, 0, 0, 1), transparent); */
+    background-color: #171717;
+    font-size: 1.2em;
+    z-index: 100;
+}
+
+.nav-transparent .nav-link,
+.nav-transparent .navbar-brand, 
+.nav-transparent p {
+    /* color: rgb(155,50,26); */
+    color: #fff;
+}
+
+.nav-transparent .navbar-brand {
+    font-weight: bold;
+}
+
+.nav-link.active,
+.nav-transparent .navbar-brand:hover,
+.nav-transparent .nav-link:hover {
+    background-color: #21627c;
+    /* color: rgb(254, 230, 178); */
+}
+
+.page div.container {
+    width: 100vw;
+    height: 100vh;
+    padding-top: 100px;
+}
+
+.custom-toggler .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(155,50,26, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
+}
+
+.custom-toggler.navbar-toggler {
+    border-color: rgb(155,50,26);
+}
+
+.btn-xs {
+    padding: 1px 5px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-color: transparent;
+    box-shadow: transparent;
+    border-radius: 3px;
+    color:#21627c;
+}
+
+.btn-check:focus+.btn,
+.btn:focus {
+    box-shadow: none;
+    border-color: transparent;
+}
+
+
+/* .btn-success {
+    background-color: #786194 !important;
+    border-color: #786194 !important;
+    box-shadow: 0 0 0 0.25rem #da9cf3 !important;;
+}
+
+.btn-outline-success {
+    background-color:lighten( #8064A2,5%);
+
+} */

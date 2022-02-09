@@ -1,7 +1,6 @@
 """Tripster app models"""
 
 import datetime
-import hashlib
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
