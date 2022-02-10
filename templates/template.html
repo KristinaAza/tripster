@@ -1,113 +1,128 @@
 {% extends 'base.html' %}
 {% block title %}{{ template.name }} Template{% endblock %}
 {% block body %}
-     <!-- Button trigger modal -->
-     <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-create" data-toggle="tooltip" data-placement="top" title="Create Trip"><i class="bi bi-magic"></i></button>
-
-    <!-- Create Trip Modal -->
-    <div class="modal fade" id="exampleModal-create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Create Trip</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="add-trip" method="POST" action="/{{template.id}}/trip">
-                    <label for="name-field">Name</label>
-                    <input id="name-field" class="form-control" type="text" name="name">
-                    <label for="date-field">Date</label>
-                    <input id="date-field" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD">
-                </form>
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-            </div>
-        </div>
-        </div>
-    </div>    
-
-    <h2>
-        <span>{{ template.name }} Template</span>
+<div class="card" style="width: max-content;">
+    <div class="card-header">
+        <h2 style="display: inline">{{ template.name }} Template</h2>
         <!-- Button trigger modal -->
-        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-    </h2>
-    <!-- Edit Template Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Template</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal-create" data-toggle="tooltip" data-placement="top" title="Create Trip"><i
+                class="bi bi-magic"></i></button>
+
+        <!-- Create Trip Modal -->
+        <div class="modal fade" id="exampleModal-create" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Create Trip</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-trip" method="POST" action="/{{template.id}}/trip">
+                            <label for="name-field">Name</label>
+                            <input id="name-field" class="form-control" type="text" name="name">
+                            <label for="date-field">Date</label>
+                            <input id="date-field" class="form-control" type="text" name="date"
+                                placeholder="YYYY-MM-DD">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="submitForm(this)">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="form" class="edit-template" method="POST" action="/template">
-                    <label for="name-field">Name</label>
-                    <input id="name-field" class="form-control" type="text" name="name" value="{{ template.name }}">
-                </form>
+        </div>
+
+
+        <!-- Button trigger modal -->
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Edit"><i
+                class="bi bi-pencil"></i></button>
+        <!-- Edit Template Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Template</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" class="edit-template" method="POST" action="/template">
+                            <label for="name-field">Name</label>
+                            <input id="name-field" class="form-control" type="text" name="name"
+                                value="{{ template.name }}">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="edit(this, '{{ template.id }}')"
+                            data-bs-dismiss="modal">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="edit(this, '{{ template.id }}')" data-bs-dismiss="modal">Save</button>            
-        </div>
-        </div>
         </div>
     </div>
-    </br>
-    <ul>
+    <ul class="list-group list-group-flush">
         {% for category in categories %}
-        {% if not category.deleted or category.items %}                
-            <li>
-                {{ category.name }}
-                {% if category.items%}
-                    <!-- Button trigger modal -->
-                    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top" title="Add Item"><i class="bi bi-plus-square"></i></button>
+        {% if not category.deleted or category.items %}
+        <li class="list-group-item">
+            <span class="first-level">{{ category.name }}</span>
+            {% if category.items%}
+            <!-- Button trigger modal -->
+            <button class="btn btn-xs btn-add" type="button" data-bs-toggle="modal"
+                data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top"
+                title="Add Item"><i class="bi bi-plus-square"></i></button>
 
-                    <!-- Add TemplateItem Modal -->
-                    <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
+            <!-- Add TemplateItem Modal -->
+            <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="add-item" method="POST" action="/{{template.id}}/template_item">
-                                    <label>Item</label>
-                                    <select name="item_id">
-                                        {% for item in category.items %}
-                                        {% if not item.deleted %}
-                                        <option value="{{ item.id }}">{{ item.name }}</option>
-                                        {% endif %}
-                                        {% endfor %}    
-                                    </select>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-                            </div>
                         </div>
+                        <div class="modal-body">
+                            <form class="add-item" method="POST" action="/{{template.id}}/template_item">
+                                <label>Item</label>
+                                <select name="item_id">
+                                    {% for item in category.items %}
+                                    {% if not item.deleted %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn" onclick="submitForm(this)">Save</button>
                         </div>
                     </div>
-                {% endif %}
-
-                <ul>
-                    {% for item in category.items|sort(attribute='name') %}
-                        {% if item in template.items %}
-                        <li>
-                            {{ item.name }}
-                            <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTemplateItem(this, '{{ template.id }}', '{{ item.id }}')"><i class="bi bi-trash"></i></button>
-                        </li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </li>
+                </div>
+            </div>
             {% endif %}
-            {% endfor %}
+
+            <ul class="list-group list-group-flush">
+                {% for item in category.items|sort(attribute='name') %}
+                {% if item in template.items %}
+                <li class="list-group-item">
+                    {{ item.name }}
+                    <button class="btn btn-xs" type="button" data-toggle="tooltip"
+                        data-placement="top" title="Delete"
+                        onclick="deleteTemplateItem(this, '{{ template.id }}', '{{ item.id }}')"><i
+                            class="bi bi-trash"></i></button>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
+        {% endfor %}
     </ul>
-    
-    <script src="/static/js/template.js"></script>
+</div>
+<script src="/static/js/template.js"></script>
 {% endblock %}

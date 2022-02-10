@@ -14,7 +14,8 @@ def redirect_to_login():
 
     if ("user_id" not in session
             and request.endpoint != "render_login"
-            and request.endpoint != "login"):
+            and request.endpoint != "login"
+            and '/static/' not in request.path):
         return redirect("/login")
 
 
@@ -50,7 +51,7 @@ def logout():
 
     session.clear()
     flash("You've successfully logged out")
-    return redirect("/login")
+    return render_template("login.html")
 
 
 @app.route("/")

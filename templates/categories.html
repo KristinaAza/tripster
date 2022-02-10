@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Categories{% endblock %}
 {% block body %}
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: max-content;">
     <div class="card-header">
         <h2 style="display: inline">Categories</h2>
         <!-- Button trigger modal -->
@@ -63,8 +63,8 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="editCategory(this, '{{ category.id }}')"
+                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn" onclick="editCategory(this, '{{ category.id }}')"
                                 data-bs-dismiss="modal">Save</button>
                         </div>
                     </div>

@@ -1,46 +1,53 @@
 {% extends 'base.html' %}
 {% block title %}Trips{% endblock %}
 {% block body %}
-    <!-- Button trigger modal -->
-    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Trip"><i class="bi bi-plus-square"></i></button>
+<div class="card" style="width: max-content;">
+    <div class="card-header">
+        <h2 style="display: inline">Trips</h2>
+        <!-- Button trigger modal -->
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Trip"><i
+                class="bi bi-plus-square"></i></button>
 
-    <!-- Add Trip Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add New Trip</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Add Trip Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Trip</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-trip" method="POST" action="/trip">
+                            <label for="name-field">Name</label>
+                            <input id="name-field" class="form-control" type="text" name="name">
+                            <label for="date-field">Date</label>
+                            <input id="date-field" class="form-control" type="text" name="date"
+                                placeholder="YYYY-MM-DD">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="submitForm(this)">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="add-trip" method="POST" action="/trip">
-                    <label for="name-field">Name</label>
-                    <input id="name-field" class="form-control" type="text" name="name">
-                    <label for="date-field">Date</label>
-                    <input id="date-field" class="form-control" type="text" name="date" placeholder="YYYY-MM-DD">
-                </form>
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-            </div>
-        </div>
         </div>
     </div>
-
-    <h2>Trips</h2>
-    <ul>
-    {% for trip in trips %}
-    {% if not trip.deleted %}
-        <li>
+    <ul class="list-group list-group-flush">
+        {% for trip in trips %}
+        {% if not trip.deleted %}
+        <li class="list-group-item">
             {{ trip.name }} {{trip.trip_date}}
-            <a href="/trips/{{trip.id}}"><button class="btn btn-secondary btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button></a>
-            <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTrip(this, '{{ trip.id }}')"><i class="bi bi-trash"></i></button>
+            <button class="btn btn-xs" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" onclick="deleteTrip(this, '{{ trip.id }}')"><i class="bi bi-trash"></i></button>
+            <a href="/trips/{{trip.id}}"><button class="btn btn-xs" type="button"
+                    data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button></a>
         </li>
-    {% endif %}
-    {% endfor %}
+        {% endif %}
+        {% endfor %}
     </ul>
-
-    <script src="static/js/trips.js"></script>
+</div>
+<script src="static/js/trips.js"></script>
 {% endblock %}

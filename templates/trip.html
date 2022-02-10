@@ -1,209 +1,250 @@
 {% extends 'base.html' %}
 {% block title %}{{ trip.name }} Trip{% endblock %}
 {% block body %}
-    <!-- Button trigger Send Email modal -->
-    <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#emailModal" data-toggle="tooltip" data-placement="top" title="Send Trip As Email"><i class="bi bi-envelope"></i></button>
-    
-    <!-- Send Email Modal -->
-    <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form" class="edit-trip" method="POST" action="/send_email">
-                    <label for="email-field">Email</label>
-                    <input id="email-field" class="form-control" type="email" name="email">
-                </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="send_email('{{ trip.id }}')" data-bs-dismiss="modal">Send</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <!-- Button trigger Send SMS modal -->
-    <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#smsModal" data-toggle="tooltip" data-placement="top" title="Send Trip As SMS"><i class="bi bi-chat-left-text"></i>
-    </i></button>
-        
-    <!-- Send SMS Modal -->
-    <div class="modal fade" id="smsModal" tabindex="-1" aria-labelledby="smsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Send SMS</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form" class="edit-trip" method="POST" action="/send_sms">
-                    <label for="phone-number-field">Phone Number</label>
-                    <input id="phone-number-field" class="form-control" type="text" name="phone_number" placeholder="+19999999999">
-                </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="send_sms('{{ trip.id }}')" data-bs-dismiss="modal">Send</button>
-            </div>
-        </div>
-        </div>
-    </div>
-
-    <h2>
-        <span>{{ trip.name }} Trip {{ trip.trip_date }}</span>
+<div class="card" style="width: max-content;">
+    <div class="card-header">
+        <h2 style="display: inline">{{ trip.name }} Trip {{ trip.trip_date }}</h2>
         <!-- Button trigger modal -->
-        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-    </h2>
-    <!-- Edit Trip Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Edit Trip</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="form" class="edit-trip" method="POST" action="/trip">
-                    <label for="name-field">Name</label>
-                    <input id="name-field" class="form-control" type="text" name="name" value="{{ trip.name }}">
-                    <label for="date-field">Date</label>
-                    <input id="date-field" class="form-control" type="text" name="date" value="{{ trip.trip_date }}">
-                </form>
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="edit(this, '{{ trip.id }}')" data-bs-dismiss="modal">Save</button>
-            </div>
-        </div>
-        </div>
-    </div>
-    </br>
-    <input type="checkbox" id="1" onclick="toggle(this)">Hide checked out items
-    
-    <ul>
-        {% for category in categories %}
-        {% if not category.deleted or category.items %}                
-        <li>
-                {{ category.name }}
-                {% if category.items %}
-                    <!-- Button trigger modal -->
-                    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top" title="Add Item"><i class="bi bi-plus-square"></i></button>
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
 
-                    <!-- Add TripItem Modal -->
-                    <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
+        <!-- Edit Trip Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Trip</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" class="edit-trip" method="POST" action="/trip">
+                            <label for="name-field">Name</label>
+                            <input id="name-field" class="form-control" type="text" name="name" value="{{ trip.name }}">
+                            <label for="date-field">Date</label>
+                            <input id="date-field" class="form-control" type="text" name="date"
+                                value="{{ trip.trip_date }}">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="edit(this, '{{ trip.id }}')"
+                            data-bs-dismiss="modal">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Button trigger Send Email modal -->
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#emailModal"
+            data-toggle="tooltip" data-placement="top" title="Send Trip As Email"><i
+                class="bi bi-envelope"></i></button>
+
+        <!-- Send Email Modal -->
+        <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Send Email</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" class="edit-trip" method="POST" action="/send_email">
+                            <label for="email-field">Email</label>
+                            <input id="email-field" class="form-control" type="email" name="email">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="send_email('{{ trip.id }}')"
+                            data-bs-dismiss="modal">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button trigger Send SMS modal -->
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal" data-bs-target="#smsModal" data-toggle="tooltip"
+            data-placement="top" title="Send Trip As SMS"><i class="bi bi-chat-left-text"></i>
+            </i></button>
+
+        <!-- Send SMS Modal -->
+        <div class="modal fade" id="smsModal" tabindex="-1" aria-labelledby="smsModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Send SMS</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="form" class="edit-trip" method="POST" action="/send_sms">
+                            <label for="phone-number-field">Phone Number</label>
+                            <input id="phone-number-field" class="form-control" type="text" name="phone_number"
+                                placeholder="+19999999999">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="send_sms('{{ trip.id }}')"
+                            data-bs-dismiss="modal">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="custom-checkbox">
+            <input type="checkbox" class="custom-checkbox-input" id="custom" onclick="toggle(this)">
+            <label class="custom-checkbox-label" for="custom">Hide checked out items</label> 
+        </div>
+
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for category in categories %}
+        {% if not category.deleted or category.items %}
+        <li class="list-group-item">
+            <span class="first-level">{{ category.name }}</span>
+            {% if category.items %}
+            <!-- Button trigger modal -->
+            <button class="btn btn-xs btn-add" type="button" data-bs-toggle="modal"
+                data-bs-target="#exampleModal-{{ category.id }}" data-toggle="tooltip" data-placement="top"
+                title="Add Item"><i class="bi bi-plus-square"></i></button>
+
+            <!-- Add TripItem Modal -->
+            <div class="modal fade" id="exampleModal-{{ category.id }}" tabindex="-1"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="add-item" method="POST" action="/{{trip.id}}/trip_item">
-                    
-                                    <label>Item</label>
-                                    <select name="item">
-                                        {% for item in category.items %}
-                                        {% if not item.deleted %}
-                                        <option value="{{ item.id }}">{{ item.name }}</option>
-                                        {% endif %}
-                                        {% endfor %}    
-                                    </select>
-                                    </br>
-                                    <label for="name-field">Quantity</label>
-                                    <input id="name-field" class="form-control" type="text" name="quantity">
-                                </form>                            
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-                            </div>
                         </div>
+                        <div class="modal-body">
+                            <form class="add-item" method="POST" action="/{{trip.id}}/trip_item">
+
+                                <label>Item</label>
+                                <select name="item">
+                                    {% for item in category.items %}
+                                    {% if not item.deleted %}
+                                    <option value="{{ item.id }}">{{ item.name }}</option>
+                                    {% endif %}
+                                    {% endfor %}
+                                </select>
+                                </br>
+                                <label for="name-field">Quantity</label>
+                                <input id="name-field" class="form-control" type="text" name="quantity">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn" onclick="submitForm(this)">Save</button>
                         </div>
                     </div>
-                {% endif %} 
-                <ul>
-                    {% for item in category.items|sort(attribute='name') %}
-                        {% if item in trip.items %}
-                        <div>
-                            {% for trip_item in item.trip_items %}
-                                {% if trip_item.trip_id == trip.id %}
-                                <div>                                 
-                                    {% if trip_item.checked %}
-                                    <input class="hide" style="display:inline;" type="checkbox" checked onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span class="hide" style="text-decoration:line-through; display:inline;">{{ item.name }} {% if trip_item.quantity != 1 %}{{ trip_item.quantity }}{% endif %}</span>
-
-                                    <!-- Button trigger modal -->
-                                    <button id="edit" class="hide btn btn-secondary btn-sm rounded-2" style="display:inline;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-                                                            
-                                    <!-- Edit TripItem Modal -->
-                                    <div class="modal fade" id="exampleModal-{{ trip_item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form id="edit-trip-item" method="POST" action="/trip_items/{{ trip_item.id }}/edit">
-                                                    <label for="name-field" >{{ trip_item.item.name }}</label>
-                                                </br>
-                                                    <label for="name-field">Quantity</label>
-                                                    <input id="name-field" class="form-control" type="text" value="{{ trip_item.quantity }}" name="quantity">
-                                                </form>  
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <button id="delete" class="hide btn btn-danger btn-sm rounded-2" style="display:inline;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTripItem(this, '{{ trip_item.id }}')"><i class="bi bi-trash"></i></button>
-                                    {% else %}
-                                    <input type="checkbox" style="display:inline;" onclick="changeChecked(this, '{{ trip_item.id }}')">
-                                    <span style="text-decoration:none; display:inline;">{{ item.name }} {% if trip_item.quantity != 1 %}{{ trip_item.quantity }}{% endif %}</span>
-
-                                    <!-- Button trigger modal -->
-                                    <button id="edit" class="btn btn-secondary btn-sm rounded-2" style="display:inline;" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-                                                            
-                                    <!-- Edit TripItem Modal -->
-                                    <div class="modal fade" id="exampleModal-{{ trip_item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <form id="edit-trip-item" method="POST" action="/trip_items/{{ trip_item.id }}/edit">
-                                                    <label for="name-field" >{{ trip_item.item.name }}</label>
-                                                </br>
-                                                    <label for="name-field">Quantity</label>
-                                                    <input id="name-field" class="form-control" type="text" value="{{ trip_item.quantity }}" name="quantity">
-                                                </form>  
-                                            </div>
-                                            <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <button id="delete" class="btn btn-danger btn-sm rounded-2" style="display:inline;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteTripItem(this, '{{ trip_item.id }}')"><i class="bi bi-trash"></i></button>
-                                    {% endif %}
-                                </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </li>
+                </div>
+            </div>
             {% endif %}
+            <ul class="list-group list-group-flush">
+                {% for item in category.items|sort(attribute='name') %}
+                {% if item in trip.items %}
+                <div class="list-group-item">
+                    {% for trip_item in item.trip_items %}
+                    {% if trip_item.trip_id == trip.id %}
+                    <div>
+                        {% if trip_item.checked %}
+                        <input class="hide" style="display:inline;" type="checkbox" checked
+                            onclick="changeChecked(this, '{{ trip_item.id }}')">
+                        <span class="hide" style="text-decoration:line-through; display:inline;">{{ item.name }} {%
+                            if trip_item.quantity != 1 %}{{ trip_item.quantity }}{% endif %}</span>
+
+                        <!-- Button trigger modal -->
+                        <button id="edit" class="hide btn btn-xs" style="display:inline;" type="button"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}"
+                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                class="bi bi-pencil"></i></button>
+
+                        <!-- Edit TripItem Modal -->
+                        <div class="modal fade" id="exampleModal-{{ trip_item.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="edit-trip-item" method="POST"
+                                            action="/trip_items/{{ trip_item.id }}/edit">
+                                            <label for="name-field">{{ trip_item.item.name }}</label>
+                                            </br>
+                                            <label for="name-field">Quantity</label>
+                                            <input id="name-field" class="form-control" type="text"
+                                                value="{{ trip_item.quantity }}" name="quantity">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn" onclick="submitForm(this)">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="delete" class="hide btn btn-xs" style="display:inline;" type="button"
+                            data-toggle="tooltip" data-placement="top" title="Delete"
+                            onclick="deleteTripItem(this, '{{ trip_item.id }}')"><i class="bi bi-trash"></i></button>
+                        {% else %}
+                        <input type="checkbox" style="display:inline;"
+                            onclick="changeChecked(this, '{{ trip_item.id }}')">
+                        <span style="text-decoration:none; display:inline;">{{ item.name }} {% if trip_item.quantity
+                            != 1 %}{{ trip_item.quantity }}{% endif %}</span>
+
+                        <!-- Button trigger modal -->
+                        <button id="edit" class="btn btn-xs" style="display:inline;" type="button"
+                            data-bs-toggle="modal" data-bs-target="#exampleModal-{{ trip_item.id }}"
+                            data-toggle="tooltip" data-placement="top" title="Edit"><i
+                                class="bi bi-pencil"></i></button>
+
+                        <!-- Edit TripItem Modal -->
+                        <div class="modal fade" id="exampleModal-{{ trip_item.id }}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="edit-trip-item" method="POST"
+                                            action="/trip_items/{{ trip_item.id }}/edit">
+                                            <label for="name-field">{{ trip_item.item.name }}</label>
+                                            </br>
+                                            <label for="name-field">Quantity</label>
+                                            <input id="name-field" class="form-control" type="text"
+                                                value="{{ trip_item.quantity }}" name="quantity">
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn" onclick="submitForm(this)">Save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="delete" class="btn btn-xs" style="display:inline;" type="button"
+                            data-toggle="tooltip" data-placement="top" title="Delete"
+                            onclick="deleteTripItem(this, '{{ trip_item.id }}')"><i class="bi bi-trash"></i></button>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        {% endif %}
         {% endfor %}
     </ul>
-    <script src="/static/js/trip.js"></script>
+</div>
+<script src="/static/js/trip.js"></script>
 {% endblock %}

@@ -1,63 +1,75 @@
 {% extends 'base.html' %}
 {% block title %}Items{% endblock %}
 {% block body %}
-    <!-- Button trigger modal -->
-    <button class="btn btn-success btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Item"><i class="bi bi-plus-square"></i></button>
-   
-    <!-- Add Item Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="card" style="width: max-content;">
+    <div class="card-header">
+        <h2 style="display: inline">Items</h2>
+        <!-- Button trigger modal -->
+        <button class="btn btn-xs" type="button" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" data-toggle="tooltip" data-placement="top" title="Add New Item"><i
+                class="bi bi-plus-square"></i></button>
+
+        <!-- Add Item Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add New Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="add-item" method="POST" action="/item">
+                            <label>Category</label>
+                            <select name="category">
+                                {% for category in categories %}
+                                {% if not category.deleted %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endif %}
+                                {% endfor %}
+                            </select>
+                            </br>
+                            <label for="name-field">Name</label>
+                            <input id="name-field" class="form-control" type="text" name="name">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn" onclick="submitForm(this)">Save</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="add-item" method="POST" action="/item">
-                    <label>Category</label>
-                    <select name="category">
-                        {% for category in categories %}
-                        {% if not category.deleted %}
-                        <option value="{{ category.id }}">{{ category.name }}</option>
-                        {% endif %}
-                        {% endfor %}    
-                    </select>
-                    </br>
-                    <label for="name-field">Name</label>
-                    <input id="name-field" class="form-control" type="text" name="name">
-                </form>
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
-            </div>
-        </div>
         </div>
     </div>
-
-    <h2>Items</h2>
-    <ul>
+    <ul class="list-group list-group-flush list-group-root well">
         {% for category in categories %}
         {% if (not category.deleted) or (category.items) %}
-        <li>
-            {{ category.name }}
-            <ul>
+        <li class="list-group-item">
+            <div class="first-level">{{ category.name }}</div>
+            <ul class="list-group list-group-flush">
                 {% for item in category.items|sort(attribute='name') %}
-                    {% if not item.deleted %}
-                    <li>
-                        {{ item.name }}
-                        <!-- Button trigger modal -->
-                        <button class="btn btn-secondary btn-sm rounded-2" type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-{{ item.id }}" data-toggle="tooltip" data-placement="top" title="Edit"><i class="bi bi-pencil"></i></button>
-                                                
-                        <!-- Edit Item Modal -->
-                        <div class="modal fade" id="exampleModal-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                           <!-- ToDo <form> -->
+                {% if not item.deleted %}
+                <li class="list-group-item">
+                    {{ item.name }}
+                    <button class="btn btn-xs" type="button" data-toggle="tooltip"
+                        data-placement="top" title="Delete" onclick="deleteItem(this, '{{ item.id }}')"><i
+                            class="bi bi-trash"></i></button>
+
+                    <!-- Button trigger modal -->
+                    <button class="btn btn-xs" type="button" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal-{{ item.id }}" data-toggle="tooltip" data-placement="top"
+                        title="Edit"><i class="bi bi-pencil"></i></button>
+
+                    <!-- Edit Item Modal -->
+                    <div class="modal fade" id="exampleModal-{{ item.id }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <!-- ToDo <form> -->
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="edit-item" method="POST" action="/item/{{ item.id }}/edit">
@@ -68,32 +80,35 @@
                                             {% if cat != category and not cat.deleted %} %}
                                             <option value="{{ cat.id }}">{{ cat.name }}</option>
                                             {% endif %}
-                                            {% endfor %}    
+                                            {% endfor %}
                                         </select>
                                         </br>
-                                        <label for="name-field" >Name</label>
-                                        <input id="name-field" class="form-control" type="text" value="{{ item.name }}" name="name">
+                                        <label for="name-field">Name</label>
+                                        <input id="name-field" class="form-control" type="text" value="{{ item.name }}"
+                                            name="name">
                                         <!-- <input type="submit" style="display:none;" value="Save" class="btn btn-primary submit"> -->
-                                    </form>  
-                                
+                                    </form>
+
                                 </div>
                                 <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary" onclick="submitForm(this)">Save</button>
+                                    <button type="button" class="btn"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn"
+                                        onclick="submitForm(this)">Save</button>
                                 </div>
                             </div>
-                           <!-- ToDo <form> -->
+                            <!-- ToDo <form> -->
                         </div>
-                        </div>
-                        <button class="btn btn-danger btn-sm rounded-2" type="button" data-toggle="tooltip" data-placement="top" title="Delete" onclick="deleteItem(this, '{{ item.id }}')"><i class="bi bi-trash"></i></button>
-                    </li>
-                    {% endif %}
+                    </div>
+                </li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </li>
         {% endif %}
         {% endfor %}
     </ul>
+</div>
 
-    <script src="static/js/items.js"></script>    
+<script src="static/js/items.js"></script>
 {% endblock %}
