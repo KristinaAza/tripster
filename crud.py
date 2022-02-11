@@ -124,7 +124,7 @@ def update_trip(user_id, trip_id, name, trip_date):
 
 def get_all_trips(user_id):
 
-    trips = Trip.query.filter_by(user_id=user_id).order_by(Trip.trip_date).all()
+    trips = Trip.query.filter_by(user_id=user_id).order_by(Trip.trip_date.desc()).all()
     return trips
 
 

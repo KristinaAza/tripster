@@ -88,6 +88,14 @@ h2 {
     border-color: rgb(155,50,26);
 }
 
+.card-header .btn-xs {
+    color: #198db8;
+}
+
+.card-header .btn-xs:hover {
+    color: #2db6e8;
+}
+
 .btn-xs {
     padding: 1px 5px;
     font-size: 12px;
