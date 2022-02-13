@@ -50,8 +50,8 @@ def login():
 def logout():
 
     session.clear()
-    flash("You've successfully logged out")
-    return render_template("login.html")
+    # flash("You've successfully logged out")
+    return redirect("/login")
 
 
 @app.route("/")
