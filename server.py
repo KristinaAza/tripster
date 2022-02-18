@@ -7,21 +7,21 @@ import send_api
 import crud
 
 app = Flask(__name__)
-app.secret_key=os.environ['SECRET_KEY']
+app.secret_key = os.environ["SECRET_KEY"]
+
 
 @app.before_request
 def redirect_to_login():
-
-    if ("user_id" not in session
-            and request.endpoint != "render_login"
-            and request.endpoint != "login"
-            and '/static/' not in request.path):
+    if (
+        "user_id" not in session
+        and request.endpoint not in ["render_login", "login"]
+        and "/static/" not in request.path
+    ):
         return redirect("/login")
 
 
 @app.route("/login")
 def render_login():
-
     if "user_id" in session:
         return redirect("/trips")
 
@@ -30,39 +30,34 @@ def render_login():
 
 @app.route("/users/login", methods=["POST"])
 def login():
-
     form = request.form
     email = form.get("email")
     password = form.get("password")
-    password_hash = hashlib.sha256(password.encode('utf-8')).hexdigest()
+    password_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
 
     user = crud.get_user_by_email(email)
 
-    if user and password_hash == user.password_hash:
+    if user and user.password_hash == password_hash:
         session["user_id"] = user.id
         return redirect("/trips")
     else:
-        flash("Wrong email or password. Try again")
+        flash("Invalid email or password.")
         return redirect("/login")
 
 
 @app.route("/logout")
 def logout():
-
     session.clear()
-    # flash("You've successfully logged out")
     return redirect("/login")
 
 
 @app.route("/")
 def redirect_to_trips():
-
     return redirect("/trips")
 
 
 @app.route("/trips")
 def render_trips():
-
     user_id = session["user_id"]
     trips = crud.get_all_trips(user_id)
 
@@ -71,7 +66,6 @@ def render_trips():
 
 @app.route("/trips/<trip_id>")
 def render_trip(trip_id):
-
     user_id = session["user_id"]
     trip = crud.get_trip_by_id(user_id, trip_id)
 
@@ -83,9 +77,8 @@ def render_trip(trip_id):
     return render_template("trip.html", trip=trip, categories=categories)
 
 
-@app.route("/api/edit_trip", methods=['POST'])
+@app.route("/api/edit_trip", methods=["POST"])
 def edit_trip():
-
     user_id = session["user_id"]
     trip_id = request.get_json().get("trip_id")
     name = request.get_json().get("name")
@@ -97,10 +90,8 @@ def edit_trip():
     return jsonify({"name": name, "trip_date": trip_date})
 
 
-
-@app.route("/trip", methods=['POST'])
+@app.route("/trip", methods=["POST"])
 def add_trip_with_rerender():
-
     user_id = session["user_id"]
     form = request.form
     name = form.get("name")
@@ -111,9 +102,8 @@ def add_trip_with_rerender():
     return redirect("/trips")
 
 
-@app.route("/api/trips/delete", methods=['POST'])
+@app.route("/api/trips/delete", methods=["POST"])
 def delete_trip():
-
     user_id = session["user_id"]
     trip_id = request.get_json().get("trip_id")
     crud.delete_trip(trip_id, user_id)
@@ -121,9 +111,8 @@ def delete_trip():
     return jsonify({"status": "trip deleted"})
 
 
-@app.route("/api/trips/send_email", methods=['POST'])
+@app.route("/api/trips/send_email", methods=["POST"])
 def send_email():
-
     user_id = session["user_id"]
     json = request.get_json()
     email = json.get("email")
@@ -139,16 +128,15 @@ def send_email():
         else:
             html_content += f"<li>{trip_item.item.name} {trip_item.quantity}</li>"
 
-    html_content +="</ol>"
+    html_content += "</ol>"
 
     send_api.send_email(email, subject, html_content)
 
     return jsonify({"status": "email sent"})
 
 
-@app.route("/api/trips/send_sms", methods=['POST'])
+@app.route("/api/trips/send_sms", methods=["POST"])
 def send_sms():
-
     user_id = session["user_id"]
     json = request.get_json()
     phone_number = json.get("phone_number")
@@ -168,9 +156,8 @@ def send_sms():
     return jsonify({"status": "sms sent"})
 
 
-@app.route("/<template_id>/trip", methods=['POST'])
+@app.route("/<template_id>/trip", methods=["POST"])
 def create_trip_with_rerender(template_id):
-
     user_id = session["user_id"]
     name = request.form.get("name")
     str_date = request.form.get("date")
@@ -184,25 +171,25 @@ def create_trip_with_rerender(template_id):
 
     return redirect(f"/trips/{trip.id}")
 
+
 @app.route("/categories")
 def render_categories():
-
     user_id = session["user_id"]
     categories = crud.get_all_categories(user_id)
 
     return render_template("categories.html", categories=categories)
 
-@app.route("/categories/<category_id>/delete", methods=['POST'])
-def delete_category_with_rerender(category_id):
 
+@app.route("/categories/<category_id>/delete", methods=["POST"])
+def delete_category_with_rerender(category_id):
     user_id = session["user_id"]
     crud.delete_category(category_id, user_id)
 
     return redirect("/categories")
 
-@app.route("/category", methods=['POST'])
-def add_category_with_rerender():
 
+@app.route("/category", methods=["POST"])
+def add_category_with_rerender():
     user_id = session["user_id"]
     name = request.form.get("name")
     crud.create_category(name, user_id)
@@ -210,9 +197,8 @@ def add_category_with_rerender():
     return redirect("/categories")
 
 
-@app.route("/api/categories/delete", methods=['POST'])
+@app.route("/api/categories/delete", methods=["POST"])
 def delete_category():
-
     user_id = session["user_id"]
     category_id = request.get_json().get("category_id")
     crud.delete_category(category_id, user_id)
@@ -220,18 +206,16 @@ def delete_category():
     return jsonify({"status": "category deleted"})
 
 
-@app.route("/api/trip_item", methods=['POST'])
+@app.route("/api/trip_item", methods=["POST"])
 def change_checked_trip_item():
-
     trip_item_id = request.get_json().get("id")
     status = crud.toggle_checked(trip_item_id)
 
     return jsonify({"checkedStatus": status})
 
 
-@app.route("/api/edit_category", methods=['POST'])
+@app.route("/api/edit_category", methods=["POST"])
 def edit_category():
-
     user_id = session["user_id"]
     name = request.get_json().get("name")
     category_id = request.get_json().get("category_id")
@@ -243,16 +227,14 @@ def edit_category():
 
 @app.route("/items")
 def render_items():
-
     user_id = session["user_id"]
     categories = crud.get_all_items_with_categories(user_id)
 
     return render_template("items.html", categories=categories)
 
 
-@app.route("/item", methods=['POST'])
+@app.route("/item", methods=["POST"])
 def add_item_with_rerender():
-
     user_id = session["user_id"]
     category_id = request.form.get("category")
     name = request.form.get("name")
@@ -261,9 +243,8 @@ def add_item_with_rerender():
     return redirect("/items")
 
 
-@app.route("/item/<item_id>/edit", methods=['POST'])
+@app.route("/item/<item_id>/edit", methods=["POST"])
 def edit_item_with_rerender(item_id):
-
     user_id = session["user_id"]
     new_category_id = request.form.get("category")
     new_name = request.form.get("name")
@@ -272,9 +253,8 @@ def edit_item_with_rerender(item_id):
     return redirect("/items")
 
 
-@app.route("/api/items/delete", methods=['POST'])
+@app.route("/api/items/delete", methods=["POST"])
 def delete_item():
-
     user_id = session["user_id"]
     item_id = request.get_json().get("item_id")
     crud.delete_item(item_id, user_id)
@@ -282,9 +262,8 @@ def delete_item():
     return jsonify({"item_id": item_id})
 
 
-@app.route("/<trip_id>/trip_item", methods=['POST'])
+@app.route("/<trip_id>/trip_item", methods=["POST"])
 def add_trip_item_with_rerender(trip_id):
-
     item_id = request.form.get("item")
 
     if not crud.get_trip_item_by_trip_id_item_id(trip_id, item_id):
@@ -294,9 +273,8 @@ def add_trip_item_with_rerender(trip_id):
     return redirect(f"/trips/{trip_id}")
 
 
-@app.route("/trip_items/<trip_item_id>/edit", methods=['POST'])
+@app.route("/trip_items/<trip_item_id>/edit", methods=["POST"])
 def edit_trip_item_quantity_with_rerender(trip_item_id):
-
     quantity = request.form.get("quantity")
     crud.update_trip_item_quantity(trip_item_id, quantity)
     trip_item = crud.get_trip_item_by_id(trip_item_id)
@@ -304,9 +282,8 @@ def edit_trip_item_quantity_with_rerender(trip_item_id):
     return redirect(f"/trips/{trip_item.trip_id}")
 
 
-@app.route("/api/trip_items/delete", methods=['POST'])
+@app.route("/api/trip_items/delete", methods=["POST"])
 def delete_trip_item():
-
     trip_item_id = request.get_json().get("trip_item_id")
     crud.delete_trip_item(trip_item_id)
 
@@ -315,16 +292,14 @@ def delete_trip_item():
 
 @app.route("/templates")
 def render_templates():
-
     user_id = session["user_id"]
     templates = crud.get_all_templates(user_id)
 
     return render_template("templates.html", templates=templates)
 
 
-@app.route("/api/templates/delete", methods=['POST'])
+@app.route("/api/templates/delete", methods=["POST"])
 def delete_template():
-
     user_id = session["user_id"]
     template_id = request.get_json().get("template_id")
     crud.delete_template(template_id, user_id)
@@ -332,10 +307,8 @@ def delete_template():
     return jsonify({"status": "template deleted"})
 
 
-
-@app.route("/template", methods=['POST'])
+@app.route("/template", methods=["POST"])
 def add_template_with_rerender():
-
     user_id = session["user_id"]
     name = request.form.get("name")
 
@@ -343,9 +316,8 @@ def add_template_with_rerender():
     return redirect("/templates")
 
 
-@app.route("/api/edit_template", methods=['POST'])
+@app.route("/api/edit_template", methods=["POST"])
 def edit_template():
-
     user_id = session["user_id"]
     template_id = request.get_json().get("template_id")
     name = request.get_json().get("name")
@@ -357,7 +329,6 @@ def edit_template():
 
 @app.route("/templates/<template_id>")
 def render_specific_template(template_id):
-
     user_id = session["user_id"]
     template = crud.get_template_by_id(user_id, template_id)
 
@@ -369,18 +340,16 @@ def render_specific_template(template_id):
     return render_template("template.html", template=template, categories=categories)
 
 
-@app.route("/<template_id>/template_item", methods=['POST'])
+@app.route("/<template_id>/template_item", methods=["POST"])
 def add_template_item_with_rerender(template_id):
-
     item_id = request.form.get("item_id")
     crud.create_template_item(item_id, template_id)
 
     return redirect(f"/templates/{template_id}")
 
 
-@app.route("/api/template_items/delete", methods=['POST'])
+@app.route("/api/template_items/delete", methods=["POST"])
 def delete_template_item():
-
     template_id = request.get_json().get("template_id")
     item_id = request.get_json().get("item_id")
     crud.delete_template_item(template_id, item_id)
@@ -389,7 +358,5 @@ def delete_template_item():
 
 
 if __name__ == "__main__":
-
     connect_to_db(app)
     app.run(host="0.0.0.0", debug=True)
-    
